@@ -23,6 +23,7 @@ import {
 
 export default function DreamDetailScreen() {
   const router = useRouter();
+
   const params = useLocalSearchParams<{
     id?: string | string[];
   }>();
@@ -64,8 +65,8 @@ export default function DreamDetailScreen() {
           }
 
           if (!savedRecord) {
-            setErrorMessage('没有找到这条梦境');
             setRecord(null);
+            setErrorMessage('没有找到这条梦境');
             return;
           }
 
@@ -148,6 +149,19 @@ export default function DreamDetailScreen() {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const openOrganizePage = () => {
+    if (!record) {
+      return;
+    }
+
+    router.push({
+      pathname: '/dream-organize',
+      params: {
+        id: record.id,
+      },
+    });
   };
 
   const handleDelete = async () => {
@@ -236,7 +250,9 @@ export default function DreamDetailScreen() {
                 </Text>
 
                 <Text style={styles.title}>
-                  {isEditing ? '编辑这段梦境' : '那时记下的梦'}
+                  {isEditing
+                    ? '编辑这段梦境'
+                    : record.title || '那时记下的梦'}
                 </Text>
 
                 <Text style={styles.dateText}>
@@ -268,6 +284,48 @@ export default function DreamDetailScreen() {
                 </View>
               ) : (
                 <View style={styles.contentCard}>
+                  {record.mood ||
+                  record.clarity ||
+                  record.dreamOrder ||
+                  (record.tags &&
+                    record.tags.length > 0) ? (
+                    <View style={styles.metadataArea}>
+                      <View style={styles.metadataRow}>
+                        {record.dreamOrder ? (
+                          <Text style={styles.metadataChip}>
+                            第 {record.dreamOrder} 个梦
+                          </Text>
+                        ) : null}
+
+                        {record.mood ? (
+                          <Text style={styles.metadataChip}>
+                            {record.mood}
+                          </Text>
+                        ) : null}
+
+                        {record.clarity ? (
+                          <Text style={styles.metadataChip}>
+                            {record.clarity}
+                          </Text>
+                        ) : null}
+                      </View>
+
+                      {record.tags &&
+                      record.tags.length > 0 ? (
+                        <View style={styles.metadataRow}>
+                          {record.tags.map((tag) => (
+                            <Text
+                              key={tag}
+                              style={styles.tagChip}
+                            >
+                              #{tag}
+                            </Text>
+                          ))}
+                        </View>
+                      ) : null}
+                    </View>
+                  ) : null}
+
                   <Text style={styles.contentText}>
                     {record.content}
                   </Text>
@@ -322,15 +380,30 @@ export default function DreamDetailScreen() {
                     <Text
                       style={[
                         styles.saveButtonText,
-                        !canSave && styles.disabledButtonText,
+                        !canSave &&
+                          styles.disabledButtonText,
                       ]}
                     >
-                      {isSaving ? '正在保存……' : '保存修改'}
+                      {isSaving
+                        ? '正在保存……'
+                        : '保存修改'}
                     </Text>
                   </Pressable>
                 </View>
               ) : (
                 <>
+                  <Pressable
+                    onPress={openOrganizePage}
+                    style={({ pressed }) => [
+                      styles.organizeButton,
+                      pressed && styles.pressed,
+                    ]}
+                  >
+                    <Text style={styles.organizeButtonText}>
+                      整理梦境信息
+                    </Text>
+                  </Pressable>
+
                   <Pressable
                     onPress={startEditing}
                     style={({ pressed }) => [
@@ -339,7 +412,7 @@ export default function DreamDetailScreen() {
                     ]}
                   >
                     <Text style={styles.editButtonText}>
-                      编辑梦境
+                      编辑梦境正文
                     </Text>
                   </Pressable>
 
@@ -367,7 +440,7 @@ export default function DreamDetailScreen() {
 
                   {confirmDelete ? (
                     <Text style={styles.deleteWarning}>
-                      删除后无法恢复。点击页面其他功能可以取消删除。
+                      删除后无法恢复。如果不想删除，请直接返回。
                     </Text>
                   ) : null}
                 </>
@@ -499,6 +572,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#10192C',
   },
 
+  metadataArea: {
+    marginBottom: 17,
+    paddingBottom: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: '#263552',
+  },
+
+  metadataRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 5,
+  },
+
+  metadataChip: {
+    color: '#A8BCEB',
+    fontSize: 10,
+    marginRight: 7,
+    marginTop: 5,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    borderRadius: 12,
+    backgroundColor: '#192744',
+  },
+
+  tagChip: {
+    color: '#7E93BD',
+    fontSize: 11,
+    marginRight: 9,
+    marginTop: 8,
+  },
+
   contentText: {
     color: '#E5EAF5',
     fontSize: 16,
@@ -538,7 +642,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 27,
     padding: 0,
-    outlineStyle: 'none',
   },
 
   inputFooter: {
@@ -576,11 +679,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  organizeButton: {
+    height: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25,
+    borderRadius: 26,
+    borderWidth: 1,
+    borderColor: '#3B5180',
+    backgroundColor: '#131F38',
+  },
+
+  organizeButtonText: {
+    color: '#AFC2EF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
   editButton: {
     height: 56,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 25,
+    marginTop: 13,
     borderRadius: 28,
     backgroundColor: '#526FCA',
   },

@@ -4,13 +4,58 @@ export const DREAM_DRAFT_KEY = 'dream-memory:text-draft:v1';
 
 const DREAM_RECORDS_KEY = 'dream-memory:records:v1';
 
+export type DreamMood =
+  | '平静'
+  | '愉快'
+  | '紧张'
+  | '悲伤'
+  | '混乱'
+  | '害怕';
+
+export type DreamClarity =
+  | '模糊'
+  | '零散片段'
+  | '比较清晰'
+  | '非常清晰';
+
 export type DreamRecord = {
   id: string;
   content: string;
   createdAt: string;
   updatedAt: string;
   inputType: 'text' | 'voice';
+
+  title?: string;
+  mood?: DreamMood;
+  clarity?: DreamClarity;
+  tags?: string[];
+  sleepDate?: string;
+  dreamOrder?: number;
 };
+
+export type DreamMetadata = {
+  title: string;
+  mood?: DreamMood;
+  clarity?: DreamClarity;
+  tags: string[];
+  dreamOrder: number;
+};
+
+function getLocalDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+function getRecordSleepDate(record: DreamRecord): string {
+  if (record.sleepDate) {
+    return record.sleepDate;
+  }
+
+  return getLocalDateKey(new Date(record.createdAt));
+}
 
 async function saveDreamRecords(
   records: DreamRecord[]
@@ -75,23 +120,61 @@ export async function completeTextDream(
     throw new Error('梦境内容不能为空');
   }
 
-  const now = new Date().toISOString();
+  const now = new Date();
+  const nowText = now.toISOString();
+  const sleepDate = getLocalDateKey(now);
+  const currentRecords = await getDreamRecords();
+
+  const sameNightDreams = currentRecords.filter(
+    (record) => getRecordSleepDate(record) === sleepDate
+  );
 
   const newRecord: DreamRecord = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     content: cleanContent,
-    createdAt: now,
-    updatedAt: now,
+    createdAt: nowText,
+    updatedAt: nowText,
     inputType: 'text',
+    sleepDate,
+    dreamOrder: sameNightDreams.length + 1,
+    tags: [],
   };
 
-  const currentRecords = await getDreamRecords();
-  const nextRecords = [newRecord, ...currentRecords];
-
-  await saveDreamRecords(nextRecords);
+  await saveDreamRecords([newRecord, ...currentRecords]);
   await clearDreamDraft();
 
   return newRecord;
+}
+
+export async function updateDreamMetadata(
+  id: string,
+  metadata: DreamMetadata
+): Promise<DreamRecord> {
+  const records = await getDreamRecords();
+  const recordIndex = records.findIndex(
+    (record) => record.id === id
+  );
+
+  if (recordIndex === -1) {
+    throw new Error('没有找到这条梦境');
+  }
+
+  const updatedRecord: DreamRecord = {
+    ...records[recordIndex],
+    title: metadata.title.trim(),
+    mood: metadata.mood,
+    clarity: metadata.clarity,
+    tags: metadata.tags,
+    dreamOrder: metadata.dreamOrder,
+    updatedAt: new Date().toISOString(),
+  };
+
+  const nextRecords = [...records];
+  nextRecords[recordIndex] = updatedRecord;
+
+  await saveDreamRecords(nextRecords);
+
+  return updatedRecord;
 }
 
 export async function updateDreamRecord(

@@ -139,9 +139,16 @@ export default function TextEntryScreen() {
     setIsCompleting(true);
 
     try {
-      await completeTextDream(content);
-      setContent('');
-      router.replace('/');
+    const newRecord = await completeTextDream(content);
+
+setContent('');
+
+router.replace({
+  pathname: '/dream-organize',
+  params: {
+    id: newRecord.id,
+  },
+});
     } catch {
       isCompletingRef.current = false;
       setIsCompleting(false);

@@ -180,12 +180,42 @@ export default function HistoryScreen() {
                     <Text style={styles.cardArrow}>›</Text>
                   </View>
 
-                  <Text
-                    style={styles.cardContent}
-                    numberOfLines={4}
-                  >
-                    {record.content}
-                  </Text>
+                 {record.title ? (
+  <Text style={styles.cardTitle} numberOfLines={1}>
+    {record.title}
+  </Text>
+) : null}
+
+<Text
+  style={styles.cardContent}
+  numberOfLines={4}
+>
+  {record.content}
+</Text>
+
+{record.mood ||
+record.clarity ||
+(record.tags && record.tags.length > 0) ? (
+  <View style={styles.metadataRow}>
+    {record.mood ? (
+      <Text style={styles.metadataChip}>
+        {record.mood}
+      </Text>
+    ) : null}
+
+    {record.clarity ? (
+      <Text style={styles.metadataChip}>
+        {record.clarity}
+      </Text>
+    ) : null}
+
+    {record.tags?.slice(0, 2).map((tag) => (
+      <Text key={tag} style={styles.metadataChip}>
+        {tag}
+      </Text>
+    ))}
+  </View>
+) : null}
 
                   <View style={styles.cardFooter}>
                     <Text style={styles.cardType}>
@@ -222,6 +252,30 @@ export default function HistoryScreen() {
 }
 
 const styles = StyleSheet.create({
+
+cardTitle: {
+  color: '#F0F3FA',
+  fontSize: 17,
+  fontWeight: '700',
+  marginTop: 15,
+},
+
+metadataRow: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop: 12,
+},
+
+metadataChip: {
+  color: '#9CB1E3',
+  fontSize: 10,
+  marginRight: 7,
+  marginTop: 4,
+  paddingHorizontal: 9,
+  paddingVertical: 5,
+  borderRadius: 12,
+  backgroundColor: '#192744',
+},
   screen: {
     flex: 1,
     backgroundColor: '#080D1B',
