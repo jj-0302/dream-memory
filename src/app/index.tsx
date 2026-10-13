@@ -1,6 +1,6 @@
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -9,9 +9,53 @@ import {
   View,
 } from 'react-native';
 
+import {
+  DreamRecord,
+  getDreamDraft,
+  getDreamRecords,
+} from '../lib/dream-storage';
+
 export default function HomeScreen() {
   const router = useRouter();
+
   const [message, setMessage] = useState('');
+  const [hasDraft, setHasDraft] = useState(false);
+  const [latestDream, setLatestDream] =
+    useState<DreamRecord | null>(null);
+  const [dreamCount, setDreamCount] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      async function loadHomeData() {
+        try {
+          const [draft, records] = await Promise.all([
+            getDreamDraft(),
+            getDreamRecords(),
+          ]);
+
+          if (!isActive) {
+            return;
+          }
+
+          setHasDraft(draft.trim().length > 0);
+          setLatestDream(records[0] ?? null);
+          setDreamCount(records.length);
+        } catch {
+          if (isActive) {
+            setMessage('暂时无法读取本地记录，请稍后重试。');
+          }
+        }
+      }
+
+      loadHomeData();
+
+      return () => {
+        isActive = false;
+      };
+    }, [])
+  );
 
   const openVoiceRecorder = () => {
     setMessage('语音记录功能将在后续步骤接入，现在可以先用文字记录。');
@@ -19,6 +63,21 @@ export default function HomeScreen() {
 
   const openTextEntry = () => {
     router.push('/text-entry');
+  };
+
+  const formatDreamTime = (dateText: string) => {
+    const date = new Date(dateText);
+
+    if (Number.isNaN(date.getTime())) {
+      return '刚刚记录';
+    }
+
+    return date.toLocaleString('zh-CN', {
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   };
 
   return (
@@ -34,7 +93,11 @@ export default function HomeScreen() {
           <View style={styles.topBar}>
             <View>
               <Text style={styles.brand}>DREAM MEMORY</Text>
-              <Text style={styles.dateText}>今天 · 醒来之后</Text>
+              <Text style={styles.dateText}>
+                {dreamCount > 0
+                  ? `已经留下 ${dreamCount} 个梦`
+                  : '今天 · 醒来之后'}
+              </Text>
             </View>
 
             <View style={styles.avatar}>
@@ -59,10 +122,7 @@ export default function HomeScreen() {
             </View>
 
             <Text style={styles.eyebrow}>醒来以后</Text>
-
-            <Text style={styles.title}>
-              你还记得什么？
-            </Text>
+            <Text style={styles.title}>你还记得什么？</Text>
 
             <Text style={styles.subtitle}>
               不必完整，也不必合理。先把梦里仍然记得的片段留下来。
@@ -82,7 +142,10 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.buttonTextArea}>
-                <Text style={styles.primaryButtonTitle}>说给我听</Text>
+                <Text style={styles.primaryButtonTitle}>
+                  说给我听
+                </Text>
+
                 <Text style={styles.primaryButtonDescription}>
                   可以停顿、重复，也可以慢慢想
                 </Text>
@@ -95,6 +158,7 @@ export default function HomeScreen() {
               onPress={openTextEntry}
               style={({ pressed }) => [
                 styles.secondaryButton,
+                hasDraft && styles.draftButton,
                 pressed && styles.buttonPressed,
               ]}
             >
@@ -103,9 +167,14 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.buttonTextArea}>
-                <Text style={styles.secondaryButtonTitle}>用文字记录</Text>
+                <Text style={styles.secondaryButtonTitle}>
+                  {hasDraft ? '继续未完成的记录' : '用文字记录'}
+                </Text>
+
                 <Text style={styles.secondaryButtonDescription}>
-                  写下一句话或一段梦境
+                  {hasDraft
+                    ? '你有一份保存在当前设备的草稿'
+                    : '写下一句话或一段梦境'}
                 </Text>
               </View>
 
@@ -119,29 +188,76 @@ export default function HomeScreen() {
             ) : null}
           </View>
 
-          <View style={styles.seedCard}>
-            <View style={styles.seedHeader}>
-              <View style={styles.seedTitleArea}>
-                <Text style={styles.seedIcon}>✦</Text>
-                <Text style={styles.seedLabel}>梦境种子</Text>
+          {latestDream ? (
+            <View style={styles.recentSection}>
+            <View style={styles.sectionHeader}>
+  <Text style={styles.sectionTitle}>最近的梦</Text>
+
+  <Pressable
+    onPress={() => router.push('/history')}
+    style={({ pressed }) => [
+      pressed && styles.buttonPressed,
+    ]}
+  >
+    <Text style={styles.sectionCount}>
+      查看全部 · 共 {dreamCount} 条 ›
+    </Text>
+  </Pressable>
+</View>
+
+              <View style={styles.dreamCard}>
+                <View style={styles.dreamCardHeader}>
+                  <View style={styles.dreamDateArea}>
+                    <Text style={styles.dreamDot}>●</Text>
+
+                    <Text style={styles.dreamDate}>
+                      {formatDreamTime(latestDream.createdAt)}
+                    </Text>
+                  </View>
+
+                  <Text style={styles.dreamType}>文字记录</Text>
+                </View>
+
+                <Text
+                  style={styles.dreamContent}
+                  numberOfLines={4}
+                >
+                  {latestDream.content}
+                </Text>
+
+                <View style={styles.savedRow}>
+                  <Text style={styles.savedIcon}>✓</Text>
+                  <Text style={styles.savedText}>
+                    已保存为正式梦境
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.seedCard}>
+              <View style={styles.seedHeader}>
+                <View style={styles.seedTitleArea}>
+                  <Text style={styles.seedIcon}>✦</Text>
+                  <Text style={styles.seedLabel}>梦境种子</Text>
+                </View>
+
+                <Text style={styles.seedTag}>随机提示</Text>
               </View>
 
-              <Text style={styles.seedTag}>随机提示</Text>
+              <Text style={styles.seedQuestion}>
+                梦里有没有一个让你印象很深的地方？
+              </Text>
+
+              <Text style={styles.seedDescription}>
+                它可能是一间房子、一条路、一所学校，或者一个现实中不存在的地方。
+              </Text>
             </View>
-
-            <Text style={styles.seedQuestion}>
-              梦里有没有一个让你印象很深的地方？
-            </Text>
-
-            <Text style={styles.seedDescription}>
-              它可能是一间房子、一条路、一所学校，或者一个现实中不存在的地方。
-            </Text>
-          </View>
+          )}
 
           <View style={styles.footer}>
             <View style={styles.footerLine} />
             <Text style={styles.footerText}>
-              你的梦境草稿只保存在当前设备中
+              你的梦境数据目前只保存在当前设备中
             </Text>
           </View>
         </View>
@@ -211,37 +327,37 @@ const styles = StyleSheet.create({
 
   hero: {
     alignItems: 'center',
-    marginTop: 36,
+    marginTop: 30,
   },
 
   moonArea: {
-    width: 150,
-    height: 150,
+    width: 140,
+    height: 140,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
 
   moonGlowLarge: {
     position: 'absolute',
-    width: 138,
-    height: 138,
-    borderRadius: 69,
+    width: 132,
+    height: 132,
+    borderRadius: 66,
     backgroundColor: 'rgba(88, 117, 199, 0.08)',
   },
 
   moonGlowSmall: {
     position: 'absolute',
-    width: 106,
-    height: 106,
-    borderRadius: 53,
+    width: 102,
+    height: 102,
+    borderRadius: 51,
     backgroundColor: 'rgba(104, 139, 226, 0.11)',
   },
 
   moon: {
-    width: 78,
-    height: 78,
-    borderRadius: 39,
+    width: 74,
+    height: 74,
+    borderRadius: 37,
     overflow: 'hidden',
     backgroundColor: '#DCE6FF',
     shadowColor: '#91ADFF',
@@ -256,11 +372,11 @@ const styles = StyleSheet.create({
 
   moonShadow: {
     position: 'absolute',
-    width: 76,
-    height: 76,
-    borderRadius: 38,
+    width: 72,
+    height: 72,
+    borderRadius: 36,
     top: -13,
-    right: -19,
+    right: -18,
     backgroundColor: '#111A32',
   },
 
@@ -269,8 +385,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    left: 17,
-    top: 47,
+    left: 16,
+    top: 44,
     backgroundColor: 'rgba(140, 158, 203, 0.35)',
   },
 
@@ -279,23 +395,23 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 3,
-    left: 28,
-    top: 58,
+    left: 27,
+    top: 55,
     backgroundColor: 'rgba(140, 158, 203, 0.24)',
   },
 
   starOne: {
     position: 'absolute',
     top: 16,
-    right: 22,
+    right: 20,
     color: '#7794D2',
     fontSize: 13,
   },
 
   starTwo: {
     position: 'absolute',
-    left: 20,
-    bottom: 30,
+    left: 18,
+    bottom: 27,
     color: '#8CA5D9',
     fontSize: 20,
   },
@@ -312,7 +428,7 @@ const styles = StyleSheet.create({
     color: '#7185AD',
     fontSize: 13,
     letterSpacing: 3,
-    marginBottom: 12,
+    marginBottom: 11,
   },
 
   title: {
@@ -329,11 +445,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 23,
     textAlign: 'center',
-    marginTop: 14,
+    marginTop: 13,
   },
 
   actionArea: {
-    marginTop: 38,
+    marginTop: 32,
   },
 
   primaryButton: {
@@ -405,6 +521,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#11192C',
   },
 
+  draftButton: {
+    borderColor: '#526FCA',
+    backgroundColor: '#121D36',
+  },
+
   secondaryIcon: {
     width: 43,
     height: 43,
@@ -459,6 +580,90 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 20,
     textAlign: 'center',
+  },
+
+  recentSection: {
+    marginTop: 28,
+  },
+
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+
+  sectionTitle: {
+    color: '#DDE4F4',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+
+  sectionCount: {
+    color: '#5D6B88',
+    fontSize: 11,
+  },
+
+  dreamCard: {
+    padding: 20,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: '#293B60',
+    backgroundColor: '#10192C',
+  },
+
+  dreamCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  dreamDateArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  dreamDot: {
+    color: '#7898F2',
+    fontSize: 8,
+    marginRight: 9,
+  },
+
+  dreamDate: {
+    color: '#8192B3',
+    fontSize: 12,
+  },
+
+  dreamType: {
+    color: '#60739A',
+    fontSize: 11,
+  },
+
+  dreamContent: {
+    color: '#E3E8F4',
+    fontSize: 15,
+    lineHeight: 24,
+    marginTop: 17,
+  },
+
+  savedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 17,
+    paddingTop: 13,
+    borderTopWidth: 1,
+    borderTopColor: '#253451',
+  },
+
+  savedIcon: {
+    color: '#7CB9A3',
+    fontSize: 12,
+    marginRight: 7,
+  },
+
+  savedText: {
+    color: '#647891',
+    fontSize: 11,
   },
 
   seedCard: {
