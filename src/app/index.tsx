@@ -1,254 +1,532 @@
+import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 
 export default function HomeScreen() {
-  const [message, setMessage] = useState(
-    '一个画面、一句话、一个完整的梦，都可以。'
-  );
+  const router = useRouter();
+  const [message, setMessage] = useState('');
+
+  const openVoiceRecorder = () => {
+    setMessage('语音记录功能将在后续步骤接入，现在可以先用文字记录。');
+  };
+
+  const openTextEntry = () => {
+    router.push('/text-entry');
+  };
 
   return (
-    <SafeAreaView style={styles.page}>
+    <View style={styles.screen}>
       <StatusBar style="light" />
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.container}>
-          <Text style={styles.brand}>DREAM MEMORY</Text>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.page}>
+          <View style={styles.topBar}>
+            <View>
+              <Text style={styles.brand}>DREAM MEMORY</Text>
+              <Text style={styles.dateText}>今天 · 醒来之后</Text>
+            </View>
 
-          <View style={styles.moonGlow}>
-            <View style={styles.moon}>
-              <Text style={styles.moonSymbol}>☾</Text>
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>✦</Text>
             </View>
           </View>
 
-          <Text style={styles.eyebrow}>早上好</Text>
+          <View style={styles.hero}>
+            <View style={styles.moonArea}>
+              <View style={styles.moonGlowLarge} />
+              <View style={styles.moonGlowSmall} />
 
-          <Text style={styles.title}>
-            醒来以后，{'\n'}你还记得什么？
-          </Text>
+              <View style={styles.moon}>
+                <View style={styles.moonShadow} />
+                <View style={styles.moonSpotOne} />
+                <View style={styles.moonSpotTwo} />
+              </View>
 
-          <Text style={styles.description}>{message}</Text>
-
-          <Pressable
-            accessibilityRole="button"
-            style={({ pressed }) => [
-              styles.recordButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={() => setMessage('录音功能将在下一阶段接入。')}
-          >
-            <Text style={styles.recordIcon}>●</Text>
-            <Text style={styles.recordText}>说给我听</Text>
-          </Pressable>
-
-          <Pressable
-            accessibilityRole="button"
-            style={({ pressed }) => [
-              styles.textButton,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={() => setMessage('你也可以直接输入记得的梦境。')}
-          >
-            <Text style={styles.textButtonLabel}>用文字记录</Text>
-          </Pressable>
-
-          <View style={styles.divider} />
-
-          <Pressable
-            accessibilityRole="button"
-            style={({ pressed }) => [
-              styles.seedCard,
-              pressed && styles.buttonPressed,
-            ]}
-            onPress={() => setMessage('睡前梦种功能将在后续页面完成。')}
-          >
-            <View style={styles.seedIcon}>
-              <Text style={styles.seedIconText}>✦</Text>
+              <Text style={styles.starOne}>✦</Text>
+              <Text style={styles.starTwo}>·</Text>
+              <Text style={styles.starThree}>✧</Text>
             </View>
 
-            <View style={styles.seedContent}>
-              <Text style={styles.seedLabel}>睡觉以前</Text>
-              <Text style={styles.seedTitle}>
-                今晚，有什么想带进梦里？
-              </Text>
-              <Text style={styles.seedDescription}>
-                留下一件困惑、一个目标，或者一种希望靠近的状态。
-              </Text>
+            <Text style={styles.eyebrow}>醒来以后</Text>
+
+            <Text style={styles.title}>
+              你还记得什么？
+            </Text>
+
+            <Text style={styles.subtitle}>
+              不必完整，也不必合理。先把梦里仍然记得的片段留下来。
+            </Text>
+          </View>
+
+          <View style={styles.actionArea}>
+            <Pressable
+              onPress={openVoiceRecorder}
+              style={({ pressed }) => [
+                styles.primaryButton,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <View style={styles.primaryIcon}>
+                <Text style={styles.primaryIconText}>●</Text>
+              </View>
+
+              <View style={styles.buttonTextArea}>
+                <Text style={styles.primaryButtonTitle}>说给我听</Text>
+                <Text style={styles.primaryButtonDescription}>
+                  可以停顿、重复，也可以慢慢想
+                </Text>
+              </View>
+
+              <Text style={styles.primaryArrow}>›</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={openTextEntry}
+              style={({ pressed }) => [
+                styles.secondaryButton,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <View style={styles.secondaryIcon}>
+                <Text style={styles.secondaryIconText}>✎</Text>
+              </View>
+
+              <View style={styles.buttonTextArea}>
+                <Text style={styles.secondaryButtonTitle}>用文字记录</Text>
+                <Text style={styles.secondaryButtonDescription}>
+                  写下一句话或一段梦境
+                </Text>
+              </View>
+
+              <Text style={styles.secondaryArrow}>›</Text>
+            </Pressable>
+
+            {message ? (
+              <View style={styles.messageBox}>
+                <Text style={styles.messageText}>{message}</Text>
+              </View>
+            ) : null}
+          </View>
+
+          <View style={styles.seedCard}>
+            <View style={styles.seedHeader}>
+              <View style={styles.seedTitleArea}>
+                <Text style={styles.seedIcon}>✦</Text>
+                <Text style={styles.seedLabel}>梦境种子</Text>
+              </View>
+
+              <Text style={styles.seedTag}>随机提示</Text>
             </View>
 
-            <Text style={styles.arrow}>›</Text>
-          </Pressable>
+            <Text style={styles.seedQuestion}>
+              梦里有没有一个让你印象很深的地方？
+            </Text>
 
-          <Text style={styles.privacy}>
-            你的梦境默认仅自己可见
-          </Text>
+            <Text style={styles.seedDescription}>
+              它可能是一间房子、一条路、一所学校，或者一个现实中不存在的地方。
+            </Text>
+          </View>
+
+          <View style={styles.footer}>
+            <View style={styles.footerLine} />
+            <Text style={styles.footerText}>
+              你的梦境草稿只保存在当前设备中
+            </Text>
+          </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  page: {
+  screen: {
     flex: 1,
     backgroundColor: '#080D1B',
   },
+
+  scrollView: {
+    flex: 1,
+  },
+
   scrollContent: {
     flexGrow: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 48,
   },
-  container: {
+
+  page: {
     width: '100%',
-    maxWidth: 480,
+    maxWidth: 720,
+    minHeight: '100%',
+    paddingTop: 48,
+    paddingHorizontal: 28,
+    paddingBottom: 40,
+  },
+
+  topBar: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
+
   brand: {
-    color: '#7783A2',
-    fontSize: 12,
-    letterSpacing: 4,
-    marginBottom: 42,
+    color: '#7185AD',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 2,
   },
-  moonGlow: {
-    width: 112,
-    height: 112,
-    borderRadius: 56,
+
+  dateText: {
+    color: '#4F5E7B',
+    fontSize: 12,
+    marginTop: 6,
+  },
+
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111A35',
-    marginBottom: 34,
+    backgroundColor: '#111B32',
+    borderWidth: 1,
+    borderColor: '#243453',
   },
+
+  avatarText: {
+    color: '#AFC7FF',
+    fontSize: 16,
+  },
+
+  hero: {
+    alignItems: 'center',
+    marginTop: 36,
+  },
+
+  moonArea: {
+    width: 150,
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+
+  moonGlowLarge: {
+    position: 'absolute',
+    width: 138,
+    height: 138,
+    borderRadius: 69,
+    backgroundColor: 'rgba(88, 117, 199, 0.08)',
+  },
+
+  moonGlowSmall: {
+    position: 'absolute',
+    width: 106,
+    height: 106,
+    borderRadius: 53,
+    backgroundColor: 'rgba(104, 139, 226, 0.11)',
+  },
+
   moon: {
+    width: 78,
+    height: 78,
+    borderRadius: 39,
+    overflow: 'hidden',
+    backgroundColor: '#DCE6FF',
+    shadowColor: '#91ADFF',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.55,
+    shadowRadius: 22,
+    elevation: 10,
+  },
+
+  moonShadow: {
+    position: 'absolute',
     width: 76,
     height: 76,
     borderRadius: 38,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E8E2D5',
+    top: -13,
+    right: -19,
+    backgroundColor: '#111A32',
   },
-  moonSymbol: {
-    color: '#17203B',
-    fontSize: 48,
-    lineHeight: 56,
+
+  moonSpotOne: {
+    position: 'absolute',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    left: 17,
+    top: 47,
+    backgroundColor: 'rgba(140, 158, 203, 0.35)',
   },
-  eyebrow: {
-    color: '#8E9AB8',
-    fontSize: 14,
-    marginBottom: 12,
+
+  moonSpotTwo: {
+    position: 'absolute',
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    left: 28,
+    top: 58,
+    backgroundColor: 'rgba(140, 158, 203, 0.24)',
   },
-  title: {
-    color: '#F5F2EA',
-    fontSize: 34,
-    lineHeight: 46,
-    textAlign: 'center',
-    fontWeight: '600',
-    marginBottom: 16,
+
+  starOne: {
+    position: 'absolute',
+    top: 16,
+    right: 22,
+    color: '#7794D2',
+    fontSize: 13,
   },
-  description: {
-    color: '#9BA6BF',
-    fontSize: 15,
-    lineHeight: 24,
-    textAlign: 'center',
-    minHeight: 48,
-    marginBottom: 24,
-  },
-  recordButton: {
-    width: '100%',
-    minHeight: 58,
-    borderRadius: 29,
-    backgroundColor: '#E8E2D5',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-  },
-  recordIcon: {
-    color: '#9A5362',
-    fontSize: 16,
-  },
-  recordText: {
-    color: '#11182C',
-    fontSize: 17,
-    fontWeight: '600',
-  },
-  textButton: {
-    marginTop: 12,
-    paddingHorizontal: 22,
-    paddingVertical: 12,
-  },
-  textButtonLabel: {
-    color: '#BBC3D6',
-    fontSize: 15,
-  },
-  buttonPressed: {
-    opacity: 0.72,
-    transform: [{ scale: 0.99 }],
-  },
-  divider: {
-    width: 42,
-    height: 1,
-    backgroundColor: '#35405A',
-    marginVertical: 30,
-  },
-  seedCard: {
-    width: '100%',
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: '#283450',
-    backgroundColor: '#10182D',
-    padding: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  seedIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#1C2948',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 14,
-  },
-  seedIconText: {
-    color: '#D8C89F',
+
+  starTwo: {
+    position: 'absolute',
+    left: 20,
+    bottom: 30,
+    color: '#8CA5D9',
     fontSize: 20,
   },
-  seedContent: {
+
+  starThree: {
+    position: 'absolute',
+    right: 5,
+    bottom: 10,
+    color: '#526B9E',
+    fontSize: 11,
+  },
+
+  eyebrow: {
+    color: '#7185AD',
+    fontSize: 13,
+    letterSpacing: 3,
+    marginBottom: 12,
+  },
+
+  title: {
+    color: '#F4F6FD',
+    fontSize: 31,
+    lineHeight: 40,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+
+  subtitle: {
+    maxWidth: 480,
+    color: '#8390AA',
+    fontSize: 14,
+    lineHeight: 23,
+    textAlign: 'center',
+    marginTop: 14,
+  },
+
+  actionArea: {
+    marginTop: 38,
+  },
+
+  primaryButton: {
+    minHeight: 78,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 22,
+    backgroundColor: '#526FCA',
+    shadowColor: '#4E6ECF',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+
+  primaryIcon: {
+    width: 43,
+    height: 43,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.14)',
+  },
+
+  primaryIconText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+  },
+
+  buttonTextArea: {
     flex: 1,
   },
-  seedLabel: {
-    color: '#7786AA',
+
+  primaryButtonTitle: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+
+  primaryButtonDescription: {
+    color: '#D6DFFF',
     fontSize: 12,
-    marginBottom: 5,
+    marginTop: 5,
   },
-  seedTitle: {
-    color: '#F0ECE2',
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 7,
+
+  primaryArrow: {
+    color: '#E4EAFF',
+    fontSize: 31,
+    fontWeight: '300',
+    marginLeft: 10,
   },
-  seedDescription: {
-    color: '#8C98B3',
+
+  secondaryButton: {
+    minHeight: 78,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    marginTop: 14,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: '#283858',
+    backgroundColor: '#11192C',
+  },
+
+  secondaryIcon: {
+    width: 43,
+    height: 43,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 15,
+    backgroundColor: '#1C2944',
+  },
+
+  secondaryIconText: {
+    color: '#AAC0F5',
+    fontSize: 20,
+  },
+
+  secondaryButtonTitle: {
+    color: '#E8ECF8',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+
+  secondaryButtonDescription: {
+    color: '#71809E',
+    fontSize: 12,
+    marginTop: 5,
+  },
+
+  secondaryArrow: {
+    color: '#7585A6',
+    fontSize: 31,
+    fontWeight: '300',
+    marginLeft: 10,
+  },
+
+  buttonPressed: {
+    opacity: 0.78,
+    transform: [{ scale: 0.99 }],
+  },
+
+  messageBox: {
+    marginTop: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+    borderRadius: 14,
+    backgroundColor: '#11192C',
+    borderWidth: 1,
+    borderColor: '#253451',
+  },
+
+  messageText: {
+    color: '#91A4CB',
     fontSize: 13,
-    lineHeight: 19,
+    lineHeight: 20,
+    textAlign: 'center',
   },
-  arrow: {
-    color: '#7080A3',
-    fontSize: 28,
-    marginLeft: 8,
+
+  seedCard: {
+    marginTop: 26,
+    padding: 20,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: '#223250',
+    backgroundColor: '#0E1628',
   },
-  privacy: {
-    color: '#56627D',
-    fontSize: 12,
-    marginTop: 24,
+
+  seedHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  seedTitleArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  seedIcon: {
+    color: '#E8CD7A',
+    fontSize: 14,
+    marginRight: 9,
+  },
+
+  seedLabel: {
+    color: '#A9B7D2',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
+  seedTag: {
+    color: '#596B8C',
+    fontSize: 11,
+  },
+
+  seedQuestion: {
+    color: '#E8ECF6',
+    fontSize: 17,
+    lineHeight: 25,
+    fontWeight: '600',
+    marginTop: 18,
+  },
+
+  seedDescription: {
+    color: '#7786A4',
+    fontSize: 13,
+    lineHeight: 21,
+    marginTop: 9,
+  },
+
+  footer: {
+    alignItems: 'center',
+    marginTop: 30,
+  },
+
+  footerLine: {
+    width: 30,
+    height: 1,
+    marginBottom: 13,
+    backgroundColor: '#26334C',
+  },
+
+  footerText: {
+    color: '#46536B',
+    fontSize: 11,
   },
 });
