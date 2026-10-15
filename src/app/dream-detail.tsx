@@ -392,6 +392,24 @@ export default function DreamDetailScreen() {
                 </View>
               ) : (
                 <>
+<Pressable
+  onPress={() =>
+    router.push({
+      pathname: '/dream-analysis',
+      params: {
+        id: record.id,
+      },
+    })
+  }
+  style={({ pressed }) => [
+    styles.analysisButton,
+    pressed && styles.pressed,
+  ]}
+>
+  <Text style={styles.analysisButtonText}>
+    ✦ 分析这段梦境
+  </Text>
+</Pressable>
                   <Pressable
                     onPress={openOrganizePage}
                     style={({ pressed }) => [
@@ -679,23 +697,37 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  organizeButton: {
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 25,
-    borderRadius: 26,
-    borderWidth: 1,
-    borderColor: '#3B5180',
-    backgroundColor: '#131F38',
-  },
+  analysisButton: {
+  height: 58,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 13,
+  borderRadius: 29,
+  backgroundColor: '#526FCA',
+},
 
-  organizeButtonText: {
-    color: '#AFC2EF',
-    fontSize: 14,
-    fontWeight: '700',
-  },
+analysisButtonText: {
+  color: '#FFFFFF',
+  fontSize: 15,
+  fontWeight: '700',
+},
 
+organizeButton: {
+  height: 52,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 13,
+  borderRadius: 26,
+  borderWidth: 1,
+  borderColor: '#3B5180',
+  backgroundColor: '#131F38',
+},
+
+organizeButtonText: {
+  color: '#AFC2EF',
+  fontSize: 14,
+  fontWeight: '700',
+},
   editButton: {
     height: 56,
     alignItems: 'center',
