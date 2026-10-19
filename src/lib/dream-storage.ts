@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { findRelevantSleepNoteId } from './sleep-storage';
 export const DREAM_DRAFT_KEY = 'dream-memory:text-draft:v1';
 
 const DREAM_RECORDS_KEY = 'dream-memory:records:v1';
@@ -31,6 +31,12 @@ export type DreamRecord = {
   tags?: string[];
   sleepDate?: string;
   dreamOrder?: number;
+
+  sleepNoteId?: string;
+
+  audioUri?: string;
+  audioDurationMillis?: number;
+  transcriptStatus?: 'pending' | 'completed' | 'failed';
 };
 
 export type DreamMetadata = {
@@ -145,7 +151,44 @@ export async function completeTextDream(
 
   return newRecord;
 }
+export async function completeVoiceDream(
+  audioUri: string,
+  durationMillis: number
+): Promise<DreamRecord> {
+  if (!audioUri) {
+    throw new Error('没有找到录音文件');
+  }
 
+  const now = new Date();
+  const nowText = now.toISOString();
+  const sleepDate = getLocalDateKey(now);
+  const currentRecords = await getDreamRecords();
+  const sleepNoteId = await findRelevantSleepNoteId(now);
+
+  const sameNightDreams = currentRecords.filter(
+    (record) => getRecordSleepDate(record) === sleepDate
+  );
+
+  const newRecord: DreamRecord = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    content: '语音梦境记录（等待转写）',
+    createdAt: nowText,
+    updatedAt: nowText,
+    inputType: 'voice',
+    sleepDate,
+    dreamOrder: sameNightDreams.length + 1,
+    tags: [],
+    sleepNoteId,
+    audioUri,
+    audioDurationMillis: durationMillis,
+    transcriptStatus: 'pending',
+  };
+
+  await saveDreamRecords([newRecord, ...currentRecords]);
+  await clearDreamDraft();
+
+  return newRecord;
+}
 export async function updateDreamMetadata(
   id: string,
   metadata: DreamMetadata

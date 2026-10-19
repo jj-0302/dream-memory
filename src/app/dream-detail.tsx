@@ -1,3 +1,4 @@
+import { DreamAudioPlayer } from '../components/dream-audio-player';
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -464,6 +465,13 @@ export default function DreamDetailScreen() {
                 </>
               )}
             </>
+               ) : null}
+
+          {!isEditing && record?.audioUri ? (
+            <DreamAudioPlayer
+              uri={record.audioUri}
+              durationMillis={record.audioDurationMillis}
+            />
           ) : null}
         </View>
       </ScrollView>

@@ -57,10 +57,9 @@ export default function HomeScreen() {
     }, [])
   );
 
-  const openVoiceRecorder = () => {
-    setMessage('语音记录功能将在后续步骤接入，现在可以先用文字记录。');
-  };
-
+const openVoiceRecorder = () => {
+  router.push('/voice-entry');
+};
   const openTextEntry = () => {
     router.push('/text-entry');
   };
