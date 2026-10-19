@@ -89,6 +89,34 @@ const openVoiceRecorder = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.page}>
+<Pressable
+  onPress={() => router.push('/insights')}
+  style={({ pressed }) => [
+    {
+      position: 'absolute',
+      top: 28,
+      right: 28,
+      zIndex: 20,
+      paddingHorizontal: 14,
+      paddingVertical: 9,
+      borderRadius: 18,
+      backgroundColor: '#162442',
+      borderWidth: 1,
+      borderColor: '#304875',
+    },
+    pressed && styles.buttonPressed,
+  ]}
+>
+  <Text
+    style={{
+      color: '#AFC0F3',
+      fontSize: 12,
+      fontWeight: '700',
+    }}
+  >
+    阶段洞察
+  </Text>
+</Pressable>
           <View style={styles.topBar}>
             <View>
               <Text style={styles.brand}>DREAM MEMORY</Text>
