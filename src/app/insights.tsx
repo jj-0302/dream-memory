@@ -169,7 +169,7 @@ export default function InsightsScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -179,7 +179,7 @@ export default function InsightsScreen() {
         <View style={styles.page}>
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.replace('/')}
               style={({ pressed }) => [
                 styles.backButton,
                 pressed && styles.pressed,
@@ -465,7 +465,7 @@ export default function InsightsScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -480,8 +480,8 @@ const styles = StyleSheet.create({
   page: {
     width: '100%',
     maxWidth: 720,
-    paddingTop: 24,
-    paddingHorizontal: 28,
+    paddingTop: 22,
+    paddingHorizontal: 22,
     paddingBottom: 56,
   },
 
@@ -498,20 +498,20 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111B31',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#263A62',
+    borderColor: '#E1EDE7',
   },
 
   backButtonText: {
-    color: '#DDE6FF',
+    color: '#173B37',
     fontSize: 30,
     lineHeight: 32,
     marginTop: -2,
   },
 
   headerLabel: {
-    color: '#7F91BB',
+    color: '#728F89',
     fontSize: 11,
     fontWeight: '800',
     letterSpacing: 2,
@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
 
   title: {
     marginTop: 22,
-    color: '#F4F7FF',
+    color: '#173B37',
     fontSize: 32,
     lineHeight: 42,
     fontWeight: '800',
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     marginTop: 10,
-    color: '#8996B4',
+    color: '#728F89',
     fontSize: 14,
     lineHeight: 23,
   },
@@ -542,9 +542,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 6,
     borderRadius: 18,
-    backgroundColor: '#0E1628',
+    backgroundColor: '#EAF6F0',
     borderWidth: 1,
-    borderColor: '#1D2C4B',
+    borderColor: '#E1EDE7',
   },
 
   rangeTab: {
@@ -556,7 +556,7 @@ const styles = StyleSheet.create({
   },
 
   rangeTabSelected: {
-    backgroundColor: '#5877D7',
+    backgroundColor: '#5FAF9C',
   },
 
   rangeTabText: {
@@ -576,13 +576,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 14,
-    backgroundColor: '#0F182A',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#203050',
+    borderColor: '#E1EDE7',
   },
 
   stateText: {
-    color: '#8C99B7',
+    color: '#728F89',
     fontSize: 14,
   },
 
@@ -592,11 +592,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#261722',
     borderWidth: 1,
-    borderColor: '#573044',
+    borderColor: '#F1C7D0',
   },
 
   errorText: {
-    color: '#FF98A9',
+    color: '#AE5B68',
     fontSize: 14,
     lineHeight: 22,
   },
@@ -614,19 +614,19 @@ const styles = StyleSheet.create({
     padding: 18,
     borderRadius: 22,
     justifyContent: 'space-between',
-    backgroundColor: '#101A2E',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#223458',
   },
 
   statValue: {
-    color: '#F3F6FF',
+    color: '#173B37',
     fontSize: 28,
     fontWeight: '800',
   },
 
   statLabel: {
-    color: '#7887A8',
+    color: '#728F89',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -635,9 +635,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 22,
     borderRadius: 24,
-    backgroundColor: '#0F182A',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#203050',
+    borderColor: '#E1EDE7',
   },
 
   sectionHeaderRow: {
@@ -647,13 +647,13 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    color: '#E9EEFF',
+    color: '#173B37',
     fontSize: 18,
     fontWeight: '800',
   },
 
   sectionHint: {
-    color: '#637395',
+    color: '#728F89',
     fontSize: 11,
   },
 
@@ -674,7 +674,7 @@ const styles = StyleSheet.create({
 
   chartCount: {
     height: 20,
-    color: '#93A8ED',
+    color: '#5FAF9C',
     fontSize: 11,
     fontWeight: '700',
   },
@@ -690,16 +690,16 @@ const styles = StyleSheet.create({
     width: '62%',
     maxWidth: 34,
     borderRadius: 10,
-    backgroundColor: '#6686EA',
+    backgroundColor: '#5FAF9C',
   },
 
   chartBarEmpty: {
-    backgroundColor: '#26334D',
+    backgroundColor: '#DDEBE5',
   },
 
   chartLabel: {
     marginTop: 8,
-    color: '#667493',
+    color: '#728F89',
     fontSize: 10,
   },
 
@@ -707,18 +707,18 @@ const styles = StyleSheet.create({
     marginTop: 18,
     padding: 14,
     borderRadius: 16,
-    backgroundColor: '#111D34',
+    backgroundColor: '#EAF6F0',
   },
 
   comparisonText: {
-    color: '#A8B7DD',
+    color: '#466A63',
     fontSize: 13,
     lineHeight: 21,
   },
 
   emptySectionText: {
     marginTop: 16,
-    color: '#6F7D9B',
+    color: '#728F89',
     fontSize: 13,
     lineHeight: 21,
   },
@@ -740,13 +740,13 @@ const styles = StyleSheet.create({
 
   distributionLabel: {
     flex: 1,
-    color: '#C9D3EF',
+    color: '#466A63',
     fontSize: 14,
     fontWeight: '700',
   },
 
   distributionCount: {
-    color: '#7484A8',
+    color: '#728F89',
     fontSize: 12,
   },
 
@@ -754,13 +754,13 @@ const styles = StyleSheet.create({
     height: 7,
     overflow: 'hidden',
     borderRadius: 8,
-    backgroundColor: '#202D47',
+    backgroundColor: '#DDEBE5',
   },
 
   progressFill: {
     height: '100%',
     borderRadius: 8,
-    backgroundColor: '#6887EA',
+    backgroundColor: '#5FAF9C',
   },
 
   connectionStats: {
@@ -782,7 +782,7 @@ const styles = StyleSheet.create({
 
   connectionLabel: {
     marginTop: 6,
-    color: '#6F7E9D',
+    color: '#728F89',
     fontSize: 10,
     textAlign: 'center',
   },
@@ -790,7 +790,7 @@ const styles = StyleSheet.create({
   connectionDivider: {
     width: 1,
     height: 38,
-    backgroundColor: '#273652',
+    backgroundColor: '#DDEBE5',
   },
 
   categoryWrap: {
@@ -804,11 +804,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 16,
-    backgroundColor: '#172440',
+    backgroundColor: '#EAF6F0',
   },
 
   categoryText: {
-    color: '#9BAEE3',
+    color: '#466A63',
     fontSize: 12,
     fontWeight: '700',
   },
@@ -817,13 +817,13 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 24,
     borderRadius: 26,
-    backgroundColor: '#182447',
+    backgroundColor: '#EAF6F0',
     borderWidth: 1,
-    borderColor: '#354D8B',
+    borderColor: '#BFDCD1',
   },
 
   reflectionEyebrow: {
-    color: '#849CF0',
+    color: '#5FAF9C',
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.8,
@@ -831,7 +831,7 @@ const styles = StyleSheet.create({
 
   reflectionTitle: {
     marginTop: 9,
-    color: '#F3F6FF',
+    color: '#173B37',
     fontSize: 21,
     fontWeight: '800',
   },
@@ -853,7 +853,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#5877D7',
+    backgroundColor: '#5FAF9C',
   },
 
   reflectionNumberText: {
@@ -864,7 +864,7 @@ const styles = StyleSheet.create({
 
   reflectionText: {
     flex: 1,
-    color: '#C5D0EE',
+    color: '#466A63',
     fontSize: 13,
     lineHeight: 22,
   },

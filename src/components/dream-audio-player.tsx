@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     padding: 17,
     borderRadius: 19,
     borderWidth: 1,
-    borderColor: '#31436B',
-    backgroundColor: '#111B31',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   playButton: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   playIcon: {
@@ -115,13 +115,13 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: '#DDE5F5',
+    color: '#173B37',
     fontSize: 13,
     fontWeight: '700',
   },
 
   duration: {
-    color: '#71809E',
+    color: '#728F89',
     fontSize: 11,
     marginTop: 5,
   },
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     height: 10,
     marginHorizontal: 2,
     borderRadius: 2,
-    backgroundColor: '#5F78B9',
+    backgroundColor: '#A7DCD0',
   },
 
   waveLineMedium: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     height: 18,
     marginHorizontal: 2,
     borderRadius: 2,
-    backgroundColor: '#7793D8',
+    backgroundColor: '#7DC4B4',
   },
 
   waveLineTall: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     height: 26,
     marginHorizontal: 2,
     borderRadius: 2,
-    backgroundColor: '#91AAF0',
+    backgroundColor: '#5FAF9C',
   },
 
   pressed: {

@@ -156,7 +156,7 @@ export default function DreamOrganizeScreen() {
   if (isLoading) {
     return (
       <View style={styles.centerScreen}>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <Text style={styles.loadingText}>
           正在准备梦境信息……
         </Text>
@@ -167,7 +167,7 @@ export default function DreamOrganizeScreen() {
   if (!record) {
     return (
       <View style={styles.centerScreen}>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <Text style={styles.errorText}>{errorMessage}</Text>
 
         <Pressable
@@ -182,7 +182,7 @@ export default function DreamOrganizeScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -222,8 +222,8 @@ export default function DreamOrganizeScreen() {
               onChangeText={setTitle}
               maxLength={40}
               placeholder="例如：被水淹没的学校"
-              placeholderTextColor="#56627A"
-              selectionColor="#7898F2"
+              placeholderTextColor="#9AB0A9"
+              selectionColor="#5FAF9C"
               style={styles.titleInput}
             />
           </View>
@@ -402,17 +402,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 28,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   loadingText: {
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 14,
   },
 
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -426,9 +426,9 @@ const styles = StyleSheet.create({
   page: {
     width: '100%',
     maxWidth: 720,
-    paddingTop: 36,
-    paddingHorizontal: 28,
-    paddingBottom: 45,
+    paddingTop: 22,
+    paddingHorizontal: 22,
+    paddingBottom: 42,
   },
 
   header: {
@@ -438,63 +438,71 @@ const styles = StyleSheet.create({
   },
 
   headerTitle: {
-    color: '#E9EDF7',
+    color: '#173B37',
     fontSize: 16,
     fontWeight: '700',
   },
 
   skipText: {
-    color: '#71809E',
+    color: '#728F89',
     fontSize: 13,
   },
 
   titleArea: {
-    marginTop: 38,
+    marginTop: 24,
+    padding: 22,
+    borderRadius: 24,
+    backgroundColor: '#EAF6F0',
   },
 
   eyebrow: {
-    color: '#7CB9A3',
+    color: '#5FAF9C',
     fontSize: 12,
     letterSpacing: 1,
   },
 
   title: {
-    color: '#F4F6FD',
+    color: '#173B37',
     fontSize: 29,
     fontWeight: '700',
     marginTop: 12,
   },
 
   subtitle: {
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 14,
     lineHeight: 22,
     marginTop: 10,
   },
 
   previewCard: {
-    marginTop: 25,
-    padding: 18,
-    borderRadius: 19,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 22,
     borderWidth: 1,
-    borderColor: '#273855',
-    backgroundColor: '#0F182A',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   previewLabel: {
-    color: '#667897',
+    color: '#728F89',
     fontSize: 11,
   },
 
   previewText: {
-    color: '#C8D1E4',
+    color: '#466A63',
     fontSize: 14,
     lineHeight: 22,
     marginTop: 10,
   },
 
   formSection: {
-    marginTop: 27,
+    marginTop: 15,
+    padding: 18,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   sectionTitleRow: {
@@ -503,13 +511,13 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    color: '#DDE4F4',
+    color: '#466A63',
     fontSize: 14,
     fontWeight: '700',
   },
 
   sectionHint: {
-    color: '#5F6E88',
+    color: '#728F89',
     fontSize: 11,
   },
 
@@ -519,9 +527,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#2A3B5D',
-    color: '#E8ECF6',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    color: '#173B37',
+    backgroundColor: '#FFFFFF',
     fontSize: 15,
     outlineStyle: 'none',
   },
@@ -540,22 +548,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 19,
     borderWidth: 1,
-    borderColor: '#293957',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   selectedChip: {
-    borderColor: '#6685DE',
-    backgroundColor: '#1B2B50',
+    borderColor: '#5FAF9C',
+    backgroundColor: '#D9F0E1',
   },
 
   optionText: {
-    color: '#8390AA',
+    color: '#728F89',
     fontSize: 13,
   },
 
   selectedText: {
-    color: '#DCE5FF',
+    color: '#466A63',
     fontWeight: '700',
   },
 
@@ -572,17 +580,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 23,
     borderWidth: 1,
-    borderColor: '#293957',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   selectedOrderButton: {
-    borderColor: '#6685DE',
-    backgroundColor: '#526FCA',
+    borderColor: '#5FAF9C',
+    backgroundColor: '#5FAF9C',
   },
 
   orderText: {
-    color: '#8390AA',
+    color: '#728F89',
     fontSize: 14,
   },
 
@@ -590,11 +598,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 14,
     borderRadius: 14,
-    backgroundColor: '#291A25',
+    backgroundColor: '#FCECEF',
   },
 
   errorText: {
-    color: '#E59090',
+    color: '#AE5B68',
     fontSize: 12,
     lineHeight: 19,
     textAlign: 'center',
@@ -605,7 +613,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 20,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   returnButtonText: {
@@ -619,7 +627,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 32,
     borderRadius: 29,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   disabledButton: {
@@ -633,7 +641,7 @@ const styles = StyleSheet.create({
   },
 
   bottomHint: {
-    color: '#4E5B73',
+    color: '#728F89',
     fontSize: 11,
     textAlign: 'center',
     marginTop: 15,

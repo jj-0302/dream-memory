@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { dreamTheme } from '../constants/dream-theme';
 
 export default function RootLayout() {
   return (
@@ -6,7 +7,7 @@ export default function RootLayout() {
       screenOptions={{
         headerShown: false,
         contentStyle: {
-          backgroundColor: '#080D1B',
+          backgroundColor: dreamTheme.background,
         },
       }}
     />

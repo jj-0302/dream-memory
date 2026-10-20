@@ -142,7 +142,7 @@ export default function DreamAnalysisScreen() {
   if (isLoading) {
     return (
       <View style={styles.centerScreen}>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <Text style={styles.loadingText}>
           正在读取梦境分析……
         </Text>
@@ -153,7 +153,7 @@ export default function DreamAnalysisScreen() {
   if (!dream) {
     return (
       <View style={styles.centerScreen}>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <Text style={styles.errorText}>
           {errorMessage || '没有找到梦境'}
         </Text>
@@ -172,7 +172,7 @@ export default function DreamAnalysisScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -182,7 +182,9 @@ export default function DreamAnalysisScreen() {
         <View style={styles.page}>
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => {
+                router.replace({ pathname: '/dream-detail', params: { id: dreamId } });
+              }}
               style={({ pressed }) => [
                 styles.backButton,
                 pressed && styles.pressed,
@@ -436,17 +438,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 28,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   loadingText: {
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 14,
   },
 
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -460,8 +462,8 @@ const styles = StyleSheet.create({
   page: {
     width: '100%',
     maxWidth: 720,
-    paddingTop: 30,
-    paddingHorizontal: 28,
+    paddingTop: 22,
+    paddingHorizontal: 22,
     paddingBottom: 45,
   },
 
@@ -478,18 +480,18 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111B32',
+    backgroundColor: '#FFFFFF',
   },
 
   backButtonText: {
-    color: '#D9E3FA',
+    color: '#173B37',
     fontSize: 34,
     lineHeight: 36,
     marginTop: -3,
   },
 
   headerTitle: {
-    color: '#E9EDF7',
+    color: '#173B37',
     fontSize: 16,
     fontWeight: '700',
   },
@@ -499,18 +501,21 @@ const styles = StyleSheet.create({
   },
 
   titleArea: {
-    marginTop: 28,
+    marginTop: 22,
+    padding: 22,
+    borderRadius: 24,
+    backgroundColor: '#EAF6F0',
   },
 
   eyebrow: {
-    color: '#7185AD',
+    color: '#728F89',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 2,
   },
 
   title: {
-    color: '#F4F6FD',
+    color: '#173B37',
     fontSize: 28,
     lineHeight: 38,
     fontWeight: '700',
@@ -518,7 +523,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 14,
     lineHeight: 22,
     marginTop: 9,
@@ -527,8 +532,10 @@ const styles = StyleSheet.create({
   modeCard: {
     marginTop: 24,
     padding: 17,
+    borderWidth: 1,
+    borderColor: '#E1EDE7',
     borderRadius: 18,
-    backgroundColor: '#121B30',
+    backgroundColor: '#FFFFFF',
   },
 
   modeHeader: {
@@ -537,18 +544,18 @@ const styles = StyleSheet.create({
   },
 
   modeTitle: {
-    color: '#C7D2EB',
+    color: '#466A63',
     fontSize: 13,
     fontWeight: '700',
   },
 
   modeTag: {
-    color: '#7CB9A3',
+    color: '#5FAF9C',
     fontSize: 10,
   },
 
   modeDescription: {
-    color: '#72819E',
+    color: '#728F89',
     fontSize: 12,
     lineHeight: 19,
     marginTop: 9,
@@ -560,24 +567,24 @@ const styles = StyleSheet.create({
     padding: 28,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: '#293B60',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   emptyIcon: {
-    color: '#E7CA73',
+    color: '#A47737',
     fontSize: 20,
   },
 
   emptyTitle: {
-    color: '#E8ECF6',
+    color: '#173B37',
     fontSize: 18,
     fontWeight: '700',
     marginTop: 15,
   },
 
   emptyDescription: {
-    color: '#75849F',
+    color: '#728F89',
     fontSize: 13,
     lineHeight: 21,
     textAlign: 'center',
@@ -591,7 +598,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 22,
     borderRadius: 27,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   generateButtonText: {
@@ -611,12 +618,12 @@ const styles = StyleSheet.create({
   },
 
   versionText: {
-    color: '#687896',
+    color: '#728F89',
     fontSize: 11,
   },
 
   regenerateText: {
-    color: '#91A9E8',
+    color: '#5FAF9C',
     fontSize: 11,
   },
 
@@ -629,20 +636,20 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginRight: 8,
     borderRadius: 15,
-    backgroundColor: '#111A2C',
+    backgroundColor: '#FFFFFF',
   },
 
   selectedVersionButton: {
-    backgroundColor: '#263A69',
+    backgroundColor: '#D9F0E1',
   },
 
   versionButtonText: {
-    color: '#66748E',
+    color: '#728F89',
     fontSize: 10,
   },
 
   selectedVersionText: {
-    color: '#D9E3FF',
+    color: '#173B37',
   },
 
   analysisSection: {
@@ -650,13 +657,13 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    color: '#E0E6F3',
+    color: '#173B37',
     fontSize: 16,
     fontWeight: '700',
   },
 
   sectionDescription: {
-    color: '#687895',
+    color: '#728F89',
     fontSize: 11,
     marginTop: 5,
   },
@@ -666,8 +673,8 @@ const styles = StyleSheet.create({
     padding: 18,
     borderRadius: 19,
     borderWidth: 1,
-    borderColor: '#263754',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   analysisItem: {
@@ -679,7 +686,7 @@ const styles = StyleSheet.create({
   },
 
   analysisBullet: {
-    color: '#7898F2',
+    color: '#5FAF9C',
     fontSize: 11,
     marginRight: 10,
     marginTop: 4,
@@ -687,7 +694,7 @@ const styles = StyleSheet.create({
 
   analysisText: {
     flex: 1,
-    color: '#CAD3E6',
+    color: '#466A63',
     fontSize: 13,
     lineHeight: 21,
   },
@@ -700,31 +707,33 @@ const styles = StyleSheet.create({
     marginTop: 12,
     padding: 17,
     borderRadius: 18,
-    backgroundColor: '#111A2D',
+    borderWidth: 1,
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   sourceTitle: {
-    color: '#D9E1F2',
+    color: '#173B37',
     fontSize: 13,
     fontWeight: '700',
     lineHeight: 20,
   },
 
   sourceAuthors: {
-    color: '#6E7D99',
+    color: '#728F89',
     fontSize: 10,
     marginTop: 7,
   },
 
   sourceNote: {
-    color: '#8795AE',
+    color: '#728F89',
     fontSize: 11,
     lineHeight: 18,
     marginTop: 9,
   },
 
   sourceLink: {
-    color: '#8EA9EF',
+    color: '#5FAF9C',
     fontSize: 11,
     marginTop: 11,
   },
@@ -733,31 +742,31 @@ const styles = StyleSheet.create({
     marginTop: 25,
     padding: 18,
     borderRadius: 18,
-    backgroundColor: '#1A1723',
+    backgroundColor: '#FFF5F6',
   },
 
   disclaimerTitle: {
-    color: '#C7AEB7',
+    color: '#8E6F78',
     fontSize: 12,
     fontWeight: '700',
   },
 
   disclaimerText: {
-    color: '#907D86',
+    color: '#8E7880',
     fontSize: 11,
     lineHeight: 19,
     marginTop: 8,
   },
 
   errorMessage: {
-    color: '#E59090',
+    color: '#AE5B68',
     fontSize: 12,
     textAlign: 'center',
     marginTop: 18,
   },
 
   errorText: {
-    color: '#E59090',
+    color: '#AE5B68',
     fontSize: 13,
   },
 
@@ -766,7 +775,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 20,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   returnButtonText: {

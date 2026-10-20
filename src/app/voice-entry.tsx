@@ -224,7 +224,7 @@ export default function VoiceEntryScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -234,7 +234,7 @@ export default function VoiceEntryScreen() {
         <View style={styles.page}>
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.replace('/')}
               style={({ pressed }) => [
                 styles.backButton,
                 pressed && styles.pressed,
@@ -397,7 +397,7 @@ export default function VoiceEntryScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -429,18 +429,18 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111B32',
+    backgroundColor: '#FFFFFF',
   },
 
   backButtonText: {
-    color: '#D9E3FA',
+    color: '#173B37',
     fontSize: 34,
     lineHeight: 36,
     marginTop: -3,
   },
 
   headerTitle: {
-    color: '#E9EDF7',
+    color: '#173B37',
     fontSize: 16,
     fontWeight: '700',
   },
@@ -451,17 +451,20 @@ const styles = StyleSheet.create({
 
   hero: {
     alignItems: 'center',
-    marginTop: 35,
+    marginTop: 24,
+    padding: 24,
+    borderRadius: 25,
+    backgroundColor: '#EAF6F0',
   },
 
   eyebrow: {
-    color: '#7185AD',
+    color: '#728F89',
     fontSize: 12,
     letterSpacing: 2,
   },
 
   title: {
-    color: '#F4F6FD',
+    color: '#173B37',
     fontSize: 30,
     fontWeight: '700',
     marginTop: 12,
@@ -469,7 +472,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     maxWidth: 500,
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 14,
     lineHeight: 23,
     textAlign: 'center',
@@ -478,17 +481,17 @@ const styles = StyleSheet.create({
 
   recorderCard: {
     alignItems: 'center',
-    marginTop: 32,
-    padding: 26,
+    marginTop: 18,
+    padding: 28,
     borderRadius: 25,
     borderWidth: 1,
-    borderColor: '#293B60',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   activeRecorderCard: {
-    borderColor: '#8B566B',
-    backgroundColor: '#171423',
+    borderColor: '#A7DCD0',
+    backgroundColor: '#F3FBF6',
   },
 
   recordingCircle: {
@@ -497,22 +500,22 @@ const styles = StyleSheet.create({
     borderRadius: 41,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#192846',
+    backgroundColor: '#EAF6F0',
   },
 
   recordingDot: {
     width: 25,
     height: 25,
     borderRadius: 13,
-    backgroundColor: '#687A9E',
+    backgroundColor: '#A7DCD0',
   },
 
   activeRecordingDot: {
-    backgroundColor: '#E16E86',
+    backgroundColor: '#5FAF9C',
   },
 
   timer: {
-    color: '#EDF1FA',
+    color: '#173B37',
     fontSize: 32,
     fontWeight: '700',
     letterSpacing: 2,
@@ -520,7 +523,7 @@ const styles = StyleSheet.create({
   },
 
   statusText: {
-    color: '#7D8BA7',
+    color: '#728F89',
     fontSize: 12,
     textAlign: 'center',
     marginTop: 9,
@@ -533,7 +536,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 22,
     borderRadius: 27,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   startButtonText: {
@@ -556,12 +559,12 @@ const styles = StyleSheet.create({
     marginRight: 7,
     borderRadius: 26,
     borderWidth: 1,
-    borderColor: '#394A6A',
-    backgroundColor: '#151E31',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   pauseButtonText: {
-    color: '#B0BDD5',
+    color: '#466A63',
     fontSize: 14,
     fontWeight: '700',
   },
@@ -573,7 +576,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 7,
     borderRadius: 26,
-    backgroundColor: '#A54E63',
+    backgroundColor: '#5FAF9C',
   },
 
   stopButtonText: {
@@ -597,7 +600,7 @@ const styles = StyleSheet.create({
 
   tipText: {
     flex: 1,
-    color: '#839ACA',
+    color: '#466A63',
     fontSize: 12,
     lineHeight: 20,
   },
@@ -608,7 +611,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 25,
     borderRadius: 29,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   completeButtonText: {
@@ -627,7 +630,7 @@ const styles = StyleSheet.create({
   },
 
   discardButtonText: {
-    color: '#806B76',
+    color: '#728F89',
     fontSize: 12,
   },
 
@@ -635,18 +638,18 @@ const styles = StyleSheet.create({
     marginTop: 17,
     padding: 15,
     borderRadius: 15,
-    backgroundColor: '#291A25',
+    backgroundColor: '#FCECEF',
   },
 
   errorText: {
-    color: '#E59090',
+    color: '#AE5B68',
     fontSize: 12,
     lineHeight: 19,
     textAlign: 'center',
   },
 
   webHint: {
-    color: '#4F5D75',
+    color: '#728F89',
     fontSize: 10,
     lineHeight: 17,
     textAlign: 'center',

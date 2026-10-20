@@ -285,7 +285,7 @@ export default function DataManagementScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -295,7 +295,7 @@ export default function DataManagementScreen() {
         <View style={styles.page}>
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.replace('/')}
               style={({ pressed }) => [
                 styles.backButton,
                 pressed && styles.pressed,
@@ -568,7 +568,7 @@ export default function DataManagementScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -583,8 +583,8 @@ const styles = StyleSheet.create({
   page: {
     width: '100%',
     maxWidth: 720,
-    paddingTop: 24,
-    paddingHorizontal: 28,
+    paddingTop: 22,
+    paddingHorizontal: 22,
     paddingBottom: 60,
   },
 
@@ -601,19 +601,19 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111B31',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#263A62',
+    borderColor: '#E1EDE7',
   },
 
   backButtonText: {
-    color: '#DDE6FF',
+    color: '#173B37',
     fontSize: 30,
     lineHeight: 32,
   },
 
   headerLabel: {
-    color: '#7F91BB',
+    color: '#728F89',
     fontSize: 11,
     fontWeight: '800',
     letterSpacing: 2,
@@ -625,7 +625,7 @@ const styles = StyleSheet.create({
 
   title: {
     marginTop: 22,
-    color: '#F4F7FF',
+    color: '#173B37',
     fontSize: 32,
     lineHeight: 42,
     fontWeight: '800',
@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     marginTop: 10,
-    color: '#8996B4',
+    color: '#728F89',
     fontSize: 14,
     lineHeight: 23,
   },
@@ -642,13 +642,13 @@ const styles = StyleSheet.create({
     marginTop: 24,
     padding: 24,
     borderRadius: 26,
-    backgroundColor: '#15213D',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#304879',
+    borderColor: '#BFDCD1',
   },
 
   cardEyebrow: {
-    color: '#8299E8',
+    color: '#5FAF9C',
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.8,
@@ -656,7 +656,7 @@ const styles = StyleSheet.create({
 
   cardTitle: {
     marginTop: 8,
-    color: '#F1F4FF',
+    color: '#173B37',
     fontSize: 20,
     fontWeight: '800',
   },
@@ -672,18 +672,18 @@ const styles = StyleSheet.create({
     width: '47%',
     padding: 16,
     borderRadius: 18,
-    backgroundColor: '#101A30',
+    backgroundColor: '#FFFFFF',
   },
 
   summaryValue: {
-    color: '#F4F7FF',
+    color: '#173B37',
     fontSize: 25,
     fontWeight: '800',
   },
 
   summaryLabel: {
     marginTop: 5,
-    color: '#7786A9',
+    color: '#728F89',
     fontSize: 12,
   },
 
@@ -695,14 +695,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 15,
     borderRadius: 16,
-    backgroundColor: '#13253A',
+    backgroundColor: '#EAF6F0',
     borderWidth: 1,
     borderColor: '#254B6B',
   },
 
   errorCard: {
-    backgroundColor: '#281722',
-    borderColor: '#613047',
+    backgroundColor: '#FCECEF',
+    borderColor: '#F1C7D0',
   },
 
   messageText: {
@@ -712,20 +712,20 @@ const styles = StyleSheet.create({
   },
 
   errorText: {
-    color: '#FF9AAD',
+    color: '#AE5B68',
   },
 
   actionCard: {
     marginTop: 16,
     padding: 22,
     borderRadius: 24,
-    backgroundColor: '#0F182A',
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#203050',
+    borderColor: '#E1EDE7',
   },
 
   actionTitle: {
-    color: '#EBF0FF',
+    color: '#173B37',
     fontSize: 18,
     fontWeight: '800',
   },
@@ -743,7 +743,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#5877D7',
+    backgroundColor: '#5FAF9C',
   },
 
   primaryButtonText: {
@@ -758,13 +758,13 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#14213A',
+    backgroundColor: '#EAF6F0',
     borderWidth: 1,
-    borderColor: '#344C7A',
+    borderColor: '#BFDCD1',
   },
 
   secondaryButtonText: {
-    color: '#B8C8F5',
+    color: '#466A63',
     fontSize: 14,
     fontWeight: '800',
   },
@@ -773,18 +773,18 @@ const styles = StyleSheet.create({
     marginTop: 18,
     padding: 18,
     borderRadius: 18,
-    backgroundColor: '#111D34',
+    backgroundColor: '#EAF6F0',
   },
 
   previewTitle: {
-    color: '#E6ECFF',
+    color: '#173B37',
     fontSize: 15,
     fontWeight: '800',
   },
 
   previewText: {
     marginTop: 8,
-    color: '#8493B5',
+    color: '#728F89',
     fontSize: 12,
     lineHeight: 19,
   },
@@ -795,7 +795,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#5877D7',
+    backgroundColor: '#5FAF9C',
   },
 
   restoreButtonText: {
@@ -821,9 +821,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 20,
     borderRadius: 22,
-    backgroundColor: '#201D2C',
+    backgroundColor: '#F4EEE7',
     borderWidth: 1,
-    borderColor: '#443852',
+    borderColor: '#E8DCD1',
   },
 
   warningTitle: {
@@ -834,7 +834,7 @@ const styles = StyleSheet.create({
 
   warningText: {
     marginTop: 9,
-    color: '#9588A8',
+    color: '#8E7880',
     fontSize: 12,
     lineHeight: 20,
   },
@@ -843,9 +843,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 22,
     borderRadius: 24,
-    backgroundColor: '#19131E',
+    backgroundColor: '#FFF5F6',
     borderWidth: 1,
-    borderColor: '#45263A',
+    borderColor: '#F1C7D0',
   },
 
   dangerTitle: {
@@ -856,7 +856,7 @@ const styles = StyleSheet.create({
 
   dangerDescription: {
     marginTop: 9,
-    color: '#9B7583',
+    color: '#8E7880',
     fontSize: 13,
     lineHeight: 21,
   },
@@ -868,12 +868,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#71384D',
+    borderColor: '#D98B9A',
   },
 
   dangerButtonConfirmed: {
-    backgroundColor: '#9B3655',
-    borderColor: '#C45373',
+    backgroundColor: '#AE5B68',
+    borderColor: '#C97889',
   },
 
   dangerButtonText: {
@@ -901,7 +901,7 @@ const styles = StyleSheet.create({
   },
 
   busyText: {
-    color: '#7D8CAD',
+    color: '#728F89',
     fontSize: 12,
   },
 

@@ -190,7 +190,7 @@ export default function DreamDetailScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -201,7 +201,7 @@ export default function DreamDetailScreen() {
         <View style={styles.page}>
           <View style={styles.header}>
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.replace('/history')}
               style={({ pressed }) => [
                 styles.backButton,
                 pressed && styles.pressed,
@@ -269,7 +269,7 @@ export default function DreamDetailScreen() {
                     multiline
                     maxLength={5000}
                     textAlignVertical="top"
-                    selectionColor="#7898F2"
+                    selectionColor="#5FAF9C"
                     style={styles.textInput}
                   />
 
@@ -482,7 +482,7 @@ export default function DreamDetailScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -516,18 +516,18 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111B32',
+    backgroundColor: '#FFFFFF',
   },
 
   backButtonText: {
-    color: '#D9E3FA',
+    color: '#173B37',
     fontSize: 34,
     lineHeight: 36,
     marginTop: -3,
   },
 
   headerTitle: {
-    color: '#E9EDF7',
+    color: '#173B37',
     fontSize: 16,
     fontWeight: '700',
   },
@@ -542,11 +542,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 25,
     borderRadius: 20,
-    backgroundColor: '#10192C',
+    backgroundColor: '#FFFFFF',
   },
 
   stateText: {
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 13,
   },
 
@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 20,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   returnButtonText: {
@@ -565,18 +565,21 @@ const styles = StyleSheet.create({
   },
 
   titleArea: {
-    marginTop: 28,
+    marginTop: 22,
+    padding: 22,
+    borderRadius: 24,
+    backgroundColor: '#EAF6F0',
   },
 
   eyebrow: {
-    color: '#7185AD',
+    color: '#728F89',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 2,
   },
 
   title: {
-    color: '#F4F6FD',
+    color: '#173B37',
     fontSize: 29,
     lineHeight: 39,
     fontWeight: '700',
@@ -584,7 +587,7 @@ const styles = StyleSheet.create({
   },
 
   dateText: {
-    color: '#71809E',
+    color: '#728F89',
     fontSize: 12,
     marginTop: 8,
   },
@@ -594,15 +597,15 @@ const styles = StyleSheet.create({
     padding: 22,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: '#293B60',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   metadataArea: {
     marginBottom: 17,
     paddingBottom: 13,
     borderBottomWidth: 1,
-    borderBottomColor: '#263552',
+    borderBottomColor: '#E1EDE7',
   },
 
   metadataRow: {
@@ -612,25 +615,25 @@ const styles = StyleSheet.create({
   },
 
   metadataChip: {
-    color: '#A8BCEB',
+    color: '#466A63',
     fontSize: 10,
     marginRight: 7,
     marginTop: 5,
     paddingHorizontal: 9,
     paddingVertical: 5,
     borderRadius: 12,
-    backgroundColor: '#192744',
+    backgroundColor: '#EAF6F0',
   },
 
   tagChip: {
-    color: '#7E93BD',
+    color: '#728F89',
     fontSize: 11,
     marginRight: 9,
     marginTop: 8,
   },
 
   contentText: {
-    color: '#E5EAF5',
+    color: '#173B37',
     fontSize: 16,
     lineHeight: 28,
   },
@@ -641,11 +644,11 @@ const styles = StyleSheet.create({
     marginTop: 22,
     paddingTop: 14,
     borderTopWidth: 1,
-    borderTopColor: '#263552',
+    borderTopColor: '#E1EDE7',
   },
 
   recordInfoText: {
-    color: '#657693',
+    color: '#728F89',
     fontSize: 11,
   },
 
@@ -657,14 +660,14 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: '#526FCA',
-    backgroundColor: '#10192C',
+    borderColor: '#5FAF9C',
+    backgroundColor: '#FFFFFF',
   },
 
   textInput: {
     flex: 1,
     minHeight: 240,
-    color: '#E8ECF6',
+    color: '#173B37',
     fontSize: 16,
     lineHeight: 27,
     padding: 0,
@@ -676,18 +679,18 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#263552',
+    borderTopColor: '#E1EDE7',
   },
 
   inputHint: {
     flex: 1,
-    color: '#63728D',
+    color: '#728F89',
     fontSize: 11,
     marginRight: 12,
   },
 
   characterCount: {
-    color: '#63728D',
+    color: '#728F89',
     fontSize: 11,
   },
 
@@ -695,11 +698,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     padding: 14,
     borderRadius: 14,
-    backgroundColor: '#291A25',
+    backgroundColor: '#FCECEF',
   },
 
   errorText: {
-    color: '#E59090',
+    color: '#AE5B68',
     fontSize: 12,
     lineHeight: 19,
     textAlign: 'center',
@@ -711,7 +714,7 @@ const styles = StyleSheet.create({
   justifyContent: 'center',
   marginTop: 13,
   borderRadius: 29,
-  backgroundColor: '#526FCA',
+  backgroundColor: '#5FAF9C',
 },
 
 analysisButtonText: {
@@ -727,12 +730,12 @@ organizeButton: {
   marginTop: 13,
   borderRadius: 26,
   borderWidth: 1,
-  borderColor: '#3B5180',
+  borderColor: '#BFDCD1',
   backgroundColor: '#131F38',
 },
 
 organizeButtonText: {
-  color: '#AFC2EF',
+  color: '#466A63',
   fontSize: 14,
   fontWeight: '700',
 },
@@ -742,7 +745,7 @@ organizeButtonText: {
     justifyContent: 'center',
     marginTop: 13,
     borderRadius: 28,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   editButtonText: {
@@ -758,12 +761,12 @@ organizeButtonText: {
     marginTop: 13,
     borderRadius: 25,
     borderWidth: 1,
-    borderColor: '#3B2B3D',
-    backgroundColor: '#151421',
+    borderColor: '#F1C7D0',
+    backgroundColor: '#FFF5F6',
   },
 
   deleteConfirmButton: {
-    borderColor: '#A85767',
+    borderColor: '#AE5B68',
     backgroundColor: '#291720',
   },
 
@@ -773,12 +776,12 @@ organizeButtonText: {
   },
 
   deleteConfirmText: {
-    color: '#EE9EAC',
+    color: '#AE5B68',
     fontWeight: '700',
   },
 
   deleteWarning: {
-    color: '#7D5F69',
+    color: '#8E7880',
     fontSize: 11,
     lineHeight: 18,
     textAlign: 'center',
@@ -798,12 +801,12 @@ organizeButtonText: {
     marginRight: 7,
     borderRadius: 28,
     borderWidth: 1,
-    borderColor: '#2B3B58',
+    borderColor: '#E1EDE7',
     backgroundColor: '#11192C',
   },
 
   cancelButtonText: {
-    color: '#A2AEC5',
+    color: '#466A63',
     fontSize: 14,
     fontWeight: '700',
   },
@@ -815,7 +818,7 @@ organizeButtonText: {
     justifyContent: 'center',
     marginLeft: 7,
     borderRadius: 28,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
   },
 
   saveButtonText: {
@@ -825,11 +828,11 @@ organizeButtonText: {
   },
 
   disabledButton: {
-    backgroundColor: '#1C273D',
+    backgroundColor: '#EAF6F0',
   },
 
   disabledButtonText: {
-    color: '#59677F',
+    color: '#728F89',
   },
 
   pressed: {

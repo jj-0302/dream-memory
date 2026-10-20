@@ -95,7 +95,7 @@ export default function TextEntryScreen() {
       setSaveStatus('saving');
       await saveDreamDraft(content);
       setSaveStatus('saved');
-      router.back();
+      router.replace('/');
     } catch {
       setSaveStatus('error');
     }
@@ -184,7 +184,7 @@ router.replace({
       style={styles.screen}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
         style={styles.scrollView}
@@ -245,8 +245,8 @@ router.replace({
               maxLength={5000}
               textAlignVertical="top"
               placeholder="例如：我好像在一所学校里，走廊里有很多水……"
-              placeholderTextColor="#56627A"
-              selectionColor="#7898F2"
+              placeholderTextColor="#9AB0A9"
+              selectionColor="#5FAF9C"
               style={styles.textInput}
             />
 
@@ -305,7 +305,7 @@ router.replace({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#080D1B',
+    backgroundColor: '#F5FBF6',
   },
 
   scrollView: {
@@ -321,9 +321,9 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 720,
     minHeight: '100%',
-    paddingTop: 30,
-    paddingHorizontal: 28,
-    paddingBottom: 36,
+    paddingTop: 22,
+    paddingHorizontal: 22,
+    paddingBottom: 42,
   },
 
   header: {
@@ -339,18 +339,18 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111B32',
+    backgroundColor: '#FFFFFF',
   },
 
   backButtonText: {
-    color: '#D9E3FA',
+    color: '#173B37',
     fontSize: 34,
     lineHeight: 36,
     marginTop: -3,
   },
 
   headerTitle: {
-    color: '#E9EDF7',
+    color: '#173B37',
     fontSize: 16,
     fontWeight: '700',
   },
@@ -363,26 +363,29 @@ const styles = StyleSheet.create({
   },
 
   clearButtonText: {
-    color: '#71809E',
+    color: '#728F89',
     fontSize: 13,
   },
 
   clearConfirmText: {
-    color: '#E59090',
+    color: '#AE5B68',
   },
 
   titleArea: {
-    marginTop: 24,
+    marginTop: 22,
+    padding: 22,
+    borderRadius: 24,
+    backgroundColor: '#EAF6F0',
   },
 
   eyebrow: {
-    color: '#7185AD',
+    color: '#728F89',
     fontSize: 13,
     letterSpacing: 2,
   },
 
   title: {
-    color: '#F4F6FD',
+    color: '#173B37',
     fontSize: 29,
     lineHeight: 39,
     fontWeight: '700',
@@ -390,7 +393,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    color: '#8290AA',
+    color: '#728F89',
     fontSize: 14,
     lineHeight: 23,
     marginTop: 10,
@@ -398,20 +401,20 @@ const styles = StyleSheet.create({
 
   inputCard: {
     minHeight: 300,
-    marginTop: 26,
+    marginTop: 18,
     paddingHorizontal: 18,
     paddingTop: 18,
     paddingBottom: 14,
-    borderRadius: 22,
+    borderRadius: 24,
     borderWidth: 1,
-    borderColor: '#2A3B5D',
-    backgroundColor: '#10192C',
+    borderColor: '#E1EDE7',
+    backgroundColor: '#FFFFFF',
   },
 
   textInput: {
     flex: 1,
     minHeight: 230,
-    color: '#E8ECF6',
+    color: '#173B37',
     fontSize: 16,
     lineHeight: 26,
     padding: 0,
@@ -426,7 +429,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#263552',
+    borderTopColor: '#E1EDE7',
   },
 
   saveStatus: {
@@ -437,11 +440,11 @@ const styles = StyleSheet.create({
   },
 
   errorText: {
-    color: '#E59090',
+    color: '#AE5B68',
   },
 
   characterCount: {
-    color: '#5F6D88',
+    color: '#728F89',
     fontSize: 11,
   },
 
@@ -452,11 +455,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 17,
     paddingVertical: 16,
     borderRadius: 17,
-    backgroundColor: '#10182A',
+    backgroundColor: '#EAF6F0',
   },
 
   tipIcon: {
-    color: '#E7CA73',
+    color: '#A47737',
     fontSize: 13,
     marginRight: 11,
     marginTop: 2,
@@ -464,7 +467,7 @@ const styles = StyleSheet.create({
 
   tipText: {
     flex: 1,
-    color: '#839ACA',
+    color: '#728F89',
     fontSize: 12,
     lineHeight: 20,
   },
@@ -475,7 +478,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 28,
     borderRadius: 29,
-    backgroundColor: '#526FCA',
+    backgroundColor: '#5FAF9C',
     shadowColor: '#4E6ECF',
     shadowOffset: {
       width: 0,
@@ -487,7 +490,7 @@ const styles = StyleSheet.create({
   },
 
   completeButtonDisabled: {
-    backgroundColor: '#1C273D',
+    backgroundColor: '#EAF6F0',
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -499,11 +502,11 @@ const styles = StyleSheet.create({
   },
 
   completeButtonTextDisabled: {
-    color: '#59677F',
+    color: '#728F89',
   },
 
   bottomHint: {
-    color: '#46536B',
+    color: '#728F89',
     fontSize: 11,
     lineHeight: 18,
     textAlign: 'center',
