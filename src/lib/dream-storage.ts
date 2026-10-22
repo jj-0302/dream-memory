@@ -130,6 +130,7 @@ export async function completeTextDream(
   const nowText = now.toISOString();
   const sleepDate = getLocalDateKey(now);
   const currentRecords = await getDreamRecords();
+  const sleepNoteId = await findRelevantSleepNoteId(now);
 
   const sameNightDreams = currentRecords.filter(
     (record) => getRecordSleepDate(record) === sleepDate
@@ -142,6 +143,7 @@ export async function completeTextDream(
     updatedAt: nowText,
     inputType: 'text',
     sleepDate,
+    sleepNoteId,
     dreamOrder: sameNightDreams.length + 1,
     tags: [],
   };

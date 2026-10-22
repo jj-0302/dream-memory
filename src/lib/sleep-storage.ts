@@ -138,6 +138,28 @@ export async function deleteSleepNote(
   );
 }
 
+export async function updateSleepNote(
+  id: string,
+  draft: SleepDraft
+): Promise<SleepNote> {
+  const cleanContent = draft.content.trim();
+  if (!cleanContent) throw new Error('睡前记录不能为空');
+  const notes = await getSleepNotes();
+  const index = notes.findIndex((note) => note.id === id);
+  if (index < 0) throw new Error('没有找到这条睡前记录');
+  const updated: SleepNote = {
+    ...notes[index],
+    content: cleanContent,
+    category: draft.category,
+    intensity: draft.intensity,
+    updatedAt: new Date().toISOString(),
+  };
+  const next = [...notes];
+  next[index] = updated;
+  await saveSleepNotes(next);
+  return updated;
+}
+
 export async function getSleepNoteById(
   id: string
 ): Promise<SleepNote | null> {

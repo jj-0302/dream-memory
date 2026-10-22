@@ -1,4 +1,4 @@
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useFocusEffect, useRouter, type Href } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -77,6 +77,18 @@ export default function HomeScreen() {
 
         <Text style={[styles.sectionTitle, styles.recordHeading]}>记录一个梦</Text>
         <Text style={styles.sectionDescription}>选择最自然的方式，慢慢说或慢慢写。</Text>
+
+        <Pressable
+          onPress={() => router.push('/sleep-notes' as Href)}
+          style={({ pressed }) => [styles.sleepButton, pressed && styles.pressed]}
+        >
+          <View style={styles.sleepIcon}><Text style={styles.sleepIconText}>☾</Text></View>
+          <View style={styles.actionCopy}>
+            <Text style={styles.sleepTitle}>睡前记下心事</Text>
+            <Text style={styles.sleepDescription}>写下牵挂或期待，醒来后可以和梦境一起回顾</Text>
+          </View>
+          <Text style={styles.textArrow}>›</Text>
+        </Pressable>
 
         <Pressable
           onPress={() => router.push('/voice-entry')}
@@ -180,6 +192,11 @@ const styles = StyleSheet.create({
   textTitle: { color: c.text, fontSize: 17, fontWeight: '700' },
   textDescription: { color: c.muted, fontSize: 12, marginTop: 5 },
   textArrow: { color: c.primaryDark, fontSize: 28 },
+  sleepButton: { marginTop: 12, minHeight: 76, borderRadius: 22, backgroundColor: '#EFF7F1', borderWidth: 1, borderColor: c.border, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18 },
+  sleepIcon: { width: 42, height: 42, borderRadius: 21, backgroundColor: '#DDEFE5', alignItems: 'center', justifyContent: 'center' },
+  sleepIconText: { color: c.primaryDark, fontSize: 23 },
+  sleepTitle: { color: c.text, fontSize: 16, fontWeight: '700' },
+  sleepDescription: { color: c.muted, fontSize: 11, lineHeight: 16, marginTop: 4, flexShrink: 1 },
   message: { color: c.error, fontSize: 13, marginTop: 13 },
   sectionRow: { marginTop: 34, marginBottom: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   allLink: { color: c.primaryDark, fontSize: 13, fontWeight: '600' },
