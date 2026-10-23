@@ -5,13 +5,16 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import {
+  Alert,
   Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   getDreamAnalyses,
@@ -20,6 +23,10 @@ import {
 } from '../lib/analysis-storage';
 import { generateLocalDreamAnalysis } from '../lib/analysis-service';
 import {
+  generateRemoteDreamAnalysis,
+  isRemoteAnalysisConfigured,
+} from '../lib/remote-analysis';
+import {
   getDreamRecordById,
   type DreamRecord,
 } from '../lib/dream-storage';
@@ -27,6 +34,9 @@ import {
   getSleepNoteById,
   type SleepNote,
 } from '../lib/sleep-storage';
+
+const ANALYSIS_CONSENT_KEY =
+  'dream-memory:ai-analysis-consent:v1';
 
 export default function DreamAnalysisScreen() {
   const router = useRouter();
@@ -100,10 +110,65 @@ export default function DreamAnalysisScreen() {
       setIsGenerating(true);
       setErrorMessage('');
 
-      const draft = generateLocalDreamAnalysis(
-        dream,
-        sleepNote
-      );
+      let draft;
+
+      if (isRemoteAnalysisConfigured()) {
+        const consent = await AsyncStorage.getItem(
+          ANALYSIS_CONSENT_KEY
+        );
+        let allowed = consent === 'accepted';
+
+        if (!allowed) {
+          allowed = await new Promise<boolean>((resolve) => {
+            const disclosure =
+              '为生成分析，这段梦境、情绪和关联的睡前记录会发送到你配置的服务端，再由 AI 服务商处理。请不要提交不希望传出的敏感信息。是否继续？';
+
+            if (Platform.OS === 'web') {
+              resolve(window.confirm(disclosure));
+              return;
+            }
+
+            Alert.alert(
+              '梦境内容将发送给 AI 服务',
+              disclosure,
+              [
+                {
+                  text: '暂不发送',
+                  style: 'cancel',
+                  onPress: () => resolve(false),
+                },
+                {
+                  text: '同意并继续',
+                  onPress: () => resolve(true),
+                },
+              ],
+              {
+                cancelable: true,
+                onDismiss: () => resolve(false),
+              }
+            );
+          });
+
+          if (!allowed) {
+            return;
+          }
+
+          await AsyncStorage.setItem(
+            ANALYSIS_CONSENT_KEY,
+            'accepted'
+          );
+        }
+
+        draft = await generateRemoteDreamAnalysis(
+          dream,
+          sleepNote
+        );
+      } else {
+        draft = generateLocalDreamAnalysis(
+          dream,
+          sleepNote
+        );
+      }
 
       const savedAnalysis = await saveDreamAnalysis(
         dream.id,
@@ -115,8 +180,12 @@ export default function DreamAnalysisScreen() {
         ...current,
       ]);
       setSelectedIndex(0);
-    } catch {
-      setErrorMessage('生成分析失败，请稍后重试');
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : '生成分析失败，请稍后重试'
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -215,14 +284,22 @@ export default function DreamAnalysisScreen() {
           <View style={styles.modeCard}>
             <View style={styles.modeHeader}>
               <Text style={styles.modeTitle}>
-                当前为离线基础分析
+                {isRemoteAnalysisConfigured()
+                  ? 'AI 分析服务已配置'
+                  : '当前为离线基础分析'}
               </Text>
 
-              <Text style={styles.modeTag}>本地运行</Text>
+              <Text style={styles.modeTag}>
+                {isRemoteAnalysisConfigured()
+                  ? '在线 AI'
+                  : '本地运行'}
+              </Text>
             </View>
 
             <Text style={styles.modeDescription}>
-              当前版本使用结构化规则验证完整流程，还没有把真实大模型密钥放进应用。之后会通过安全后端接入。
+              {isRemoteAnalysisConfigured()
+                ? '分析请求会发送到你配置的服务端。API 密钥保存在服务端，不放在手机 App 中。首次使用前会说明数据传输并征求同意。'
+                : '当前版本使用结构化规则验证完整流程，还没有接入真实大模型。配置服务端后才会发送梦境内容进行 AI 分析。'}
             </Text>
           </View>
 

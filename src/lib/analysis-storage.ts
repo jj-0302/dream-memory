@@ -17,7 +17,7 @@ export type DreamAnalysisDraft = {
   gentleSuggestions: string[];
   evidenceSources: EvidenceSource[];
   disclaimer: string;
-  generator: 'local-reflection';
+  generator: 'local-reflection' | 'ai';
 };
 
 export type DreamAnalysis = DreamAnalysisDraft & {
