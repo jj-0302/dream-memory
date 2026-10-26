@@ -11,6 +11,12 @@ export type EvidenceSource = {
 };
 
 export type DreamAnalysisDraft = {
+  dreamSummary?: string;
+  emotionalThemes?: string[];
+  keyElements?: string[];
+  sleepNoteConnections?: string[];
+  alternativeInterpretations?: string[];
+  evidenceBoundaries?: string[];
   observations: string[];
   possibleConnections: string[];
   reflectionQuestions: string[];

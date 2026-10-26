@@ -374,11 +374,41 @@ export default function DreamAnalysisScreen() {
                             styles.selectedVersionText,
                         ]}
                       >
-                        {formatTime(analysis.createdAt)}
+                        {formatTime(analysis.createdAt)} ·{' '}
+                        {analysis.generator === 'ai'
+                          ? 'AI'
+                          : '本地'}
                       </Text>
                     </Pressable>
                   ))}
                 </ScrollView>
+              ) : null}
+
+              {currentAnalysis.dreamSummary ? (
+                <View style={styles.summaryCard}>
+                  <Text style={styles.summaryLabel}>
+                    AI 梦境摘要
+                  </Text>
+                  <Text style={styles.summaryText}>
+                    {currentAnalysis.dreamSummary}
+                  </Text>
+                </View>
+              ) : null}
+
+              {currentAnalysis.emotionalThemes?.length ? (
+                <AnalysisSection
+                  title="核心情绪与变化"
+                  description="区分梦中明确情绪与可探索的情绪线索"
+                  items={currentAnalysis.emotionalThemes}
+                />
+              ) : null}
+
+              {currentAnalysis.keyElements?.length ? (
+                <AnalysisSection
+                  title="关键人物、场景与事件"
+                  description="关注梦中反复出现或推动情节的元素"
+                  items={currentAnalysis.keyElements}
+                />
               ) : null}
 
               <AnalysisSection
@@ -387,6 +417,14 @@ export default function DreamAnalysisScreen() {
                 items={currentAnalysis.observations}
               />
 
+              {currentAnalysis.sleepNoteConnections?.length ? (
+                <AnalysisSection
+                  title="与睡前记录的可能联系"
+                  description="只讨论可能的连续性，不把时间相邻当成因果"
+                  items={currentAnalysis.sleepNoteConnections}
+                />
+              ) : null}
+
               <AnalysisSection
                 title="可能的联系"
                 description="这些是探索方向，不是确定解释"
@@ -394,6 +432,22 @@ export default function DreamAnalysisScreen() {
                   currentAnalysis.possibleConnections
                 }
               />
+
+              {currentAnalysis.alternativeInterpretations?.length ? (
+                <AnalysisSection
+                  title="其他解释方向"
+                  description="同时保留多种可能，避免把单一解释当成答案"
+                  items={currentAnalysis.alternativeInterpretations}
+                />
+              ) : null}
+
+              {currentAnalysis.evidenceBoundaries?.length ? (
+                <AnalysisSection
+                  title="研究依据与边界"
+                  description="说明哪些属于研究背景，哪些仍只是个人层面的推测"
+                  items={currentAnalysis.evidenceBoundaries}
+                />
+              ) : null}
 
               <AnalysisSection
                 title="可以问自己的问题"
@@ -727,6 +781,27 @@ const styles = StyleSheet.create({
 
   selectedVersionText: {
     color: '#173B37',
+  },
+
+  summaryCard: {
+    marginTop: 27,
+    padding: 20,
+    borderRadius: 20,
+    backgroundColor: '#EAF6F0',
+  },
+
+  summaryLabel: {
+    color: '#5FAF9C',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+
+  summaryText: {
+    color: '#2D554E',
+    fontSize: 14,
+    lineHeight: 23,
+    marginTop: 10,
   },
 
   analysisSection: {

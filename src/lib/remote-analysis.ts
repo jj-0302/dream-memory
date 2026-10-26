@@ -51,6 +51,11 @@ export async function generateRemoteDreamAnalysis(
   }
 
   const fields = [
+    'emotionalThemes',
+    'keyElements',
+    'sleepNoteConnections',
+    'alternativeInterpretations',
+    'evidenceBoundaries',
     'observations',
     'possibleConnections',
     'reflectionQuestions',
@@ -64,9 +69,23 @@ export async function generateRemoteDreamAnalysis(
     }
   }
 
+  if (
+    typeof body.analysis.dreamSummary !== 'string' ||
+    !body.analysis.dreamSummary.trim()
+  ) {
+    throw new Error('分析服务返回的梦境摘要不完整，请稍后重试');
+  }
+
   const localContext = generateLocalDreamAnalysis(dream, sleepNote);
 
   return {
+    dreamSummary: body.analysis.dreamSummary.trim(),
+    emotionalThemes: body.analysis.emotionalThemes as string[],
+    keyElements: body.analysis.keyElements as string[],
+    sleepNoteConnections: body.analysis.sleepNoteConnections as string[],
+    alternativeInterpretations:
+      body.analysis.alternativeInterpretations as string[],
+    evidenceBoundaries: body.analysis.evidenceBoundaries as string[],
     observations: body.analysis.observations as string[],
     possibleConnections: body.analysis.possibleConnections as string[],
     reflectionQuestions: body.analysis.reflectionQuestions as string[],
