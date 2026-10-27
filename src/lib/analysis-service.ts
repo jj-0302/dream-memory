@@ -119,6 +119,8 @@ function buildQuestions(
   sleepNote: SleepNote | null
 ): string[] {
   const questions = [
+    '选一个梦里最在意的人物、场景或物品，不急着解释：你首先想到什么经历或感受？',
+    '这些是梦里原本发生的事，还是醒来后你联想到的内容？',
     '梦里最强烈的情绪出现在哪个时刻？',
     '梦中的人物、地点或任务，最近在现实生活中是否出现过相似版本？',
   ];
@@ -142,7 +144,20 @@ export function generateLocalDreamAnalysis(
   dream: DreamRecord,
   sleepNote: SleepNote | null
 ): DreamAnalysisDraft {
+  const questions = buildQuestions(dream, sleepNote).slice(0, 4);
   return {
+    schemaVersion: 3,
+    publicSections: {
+      understanding: '这份离线整理还不能给出具体理解。你可以先选一个最在意的细节，说说它让你想起什么；这些个人联想比通用象征更有帮助。',
+      keyClues: dream.tags?.length
+        ? ['你标记的主题是“' + dream.tags.join('、') + '”。这只是你选择的标签，还需要回到梦中细节核对。']
+        : ['还没有足够信息提炼具体线索，可以先挑出梦里最难忘的一个画面。'],
+      wakingConnections: sleepNote
+        ? ['关联的睡前记录是“' + sleepNote.content + '”。可以对照两段记录的相似与不同，目前不能确认联系。']
+        : ['这段梦没有关联睡前记录，暂时缺少对照信息。'],
+      possibleReadings: [],
+      furtherExploration: questions,
+    },
     observations: buildObservations(dream, sleepNote),
 
     possibleConnections: buildConnections(
@@ -150,10 +165,7 @@ export function generateLocalDreamAnalysis(
       sleepNote
     ),
 
-    reflectionQuestions: buildQuestions(
-      dream,
-      sleepNote
-    ),
+    reflectionQuestions: questions,
 
     gentleSuggestions: [
       '未来几天继续记录相似主题，但不必刻意寻找固定象征。',

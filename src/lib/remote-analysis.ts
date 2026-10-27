@@ -1,5 +1,6 @@
 import type { DreamAnalysisDraft } from './analysis-storage';
 import { generateLocalDreamAnalysis } from './analysis-service';
+import { isAnalysisPublicSections } from './analysis-presentation';
 import type { DreamRecord } from './dream-storage';
 import type { SleepNote } from './sleep-storage';
 
@@ -76,9 +77,15 @@ export async function generateRemoteDreamAnalysis(
     throw new Error('分析服务返回的梦境摘要不完整，请稍后重试');
   }
 
+  const hasNewFormat = body.analysis.schemaVersion !== undefined || body.analysis.publicSections !== undefined;
+  if (hasNewFormat && (body.analysis.schemaVersion !== 3 || !isAnalysisPublicSections(body.analysis.publicSections))) {
+    throw new Error('分析服务返回的新结构不完整，请稍后重试');
+  }
+
   const localContext = generateLocalDreamAnalysis(dream, sleepNote);
 
   return {
+    ...(hasNewFormat ? { schemaVersion: 3 as const, publicSections: body.analysis.publicSections } : {}),
     dreamSummary: body.analysis.dreamSummary.trim(),
     emotionalThemes: body.analysis.emotionalThemes as string[],
     keyElements: body.analysis.keyElements as string[],

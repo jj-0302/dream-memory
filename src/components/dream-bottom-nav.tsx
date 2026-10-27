@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -15,6 +15,7 @@ const tabs = [
 
 export function DreamBottomNav({ active }: { active: Tab }) {
   const router = useRouter();
+  const pathname = usePathname();
   const insets = useSafeAreaInsets();
 
   return (
@@ -29,7 +30,7 @@ export function DreamBottomNav({ active }: { active: Tab }) {
             accessibilityState={{ selected }}
             accessibilityLabel={tab.label}
             onPress={() => {
-              if (!selected) router.replace(tab.href);
+              if (pathname !== tab.href) router.replace(tab.href);
             }}
             style={({ pressed }) => [styles.item, pressed && styles.pressed]}
           >

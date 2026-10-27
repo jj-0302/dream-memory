@@ -459,7 +459,7 @@ export default function DreamDetailScreen() {
 
                   {confirmDelete ? (
                     <Text style={styles.deleteWarning}>
-                      删除后无法恢复。如果不想删除，请直接返回。
+                      删除后无法恢复。关联分析、探索和包含这条梦境的阶段复盘也会删除。如果不想删除，请直接返回。
                     </Text>
                   ) : null}
                 </>

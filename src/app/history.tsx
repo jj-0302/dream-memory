@@ -54,6 +54,7 @@ export default function HistoryScreen() {
         <Text style={styles.kicker}>DREAM ARCHIVE</Text>
         <Text style={styles.title}>我的梦境</Text>
         <Text style={styles.subtitle}>每一个片段，都有自己的位置。</Text>
+        <Pressable accessibilityRole="button" onPress={() => router.push('./dream-review')}><Text style={styles.subtitle}>选择梦境，查看阶段复盘 ›</Text></Pressable>
 
         <View style={styles.summary}>
           <View>

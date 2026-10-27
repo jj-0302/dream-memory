@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DreamBottomNav } from '../components/dream-bottom-nav';
 import { dreamTheme as c } from '../constants/dream-theme';
 import { getDreamDraft, getDreamRecords, type DreamRecord } from '../lib/dream-storage';
+import { isValidReviewDream } from '../lib/review-service';
 
 function formatDate(value: string): string {
   const date = new Date(value);
@@ -20,6 +21,7 @@ export default function HomeScreen() {
   const [hasDraft, setHasDraft] = useState(false);
   const [recentDreams, setRecentDreams] = useState<DreamRecord[]>([]);
   const [dreamCount, setDreamCount] = useState(0);
+  const [validDreamCount, setValidDreamCount] = useState(0);
   const [message, setMessage] = useState('');
 
   useFocusEffect(
@@ -32,6 +34,7 @@ export default function HomeScreen() {
           setHasDraft(draft.trim().length > 0);
           setRecentDreams(records.slice(0, 2));
           setDreamCount(records.length);
+          setValidDreamCount(records.filter(isValidReviewDream).length);
           setMessage('');
         } catch {
           if (active) setMessage('暂时无法读取本地记录，请稍后重试。');
@@ -153,6 +156,11 @@ export default function HomeScreen() {
           </View>
         )}
 
+        {validDreamCount >= 5 ? <Pressable accessibilityRole="button" onPress={() => router.push('./dream-review')} style={styles.dreamCard}>
+          <Text style={styles.dreamTitle}>你已经记录了{validDreamCount}个梦</Text>
+          <Text style={styles.dreamContent}>要不要看看最近反复出现的情绪和主题？</Text>
+          <Text style={styles.allLink}>选择记录，开始阶段复盘 ›</Text>
+        </Pressable> : null}
         <Text style={styles.footer}>{dreamCount} 条梦境保存在当前设备中</Text>
       </ScrollView>
       <DreamBottomNav active="home" />

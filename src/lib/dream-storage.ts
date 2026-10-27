@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { findRelevantSleepNoteId } from './sleep-storage';
+import { deleteDreamExplorations } from './exploration-storage';
+import { deleteDreamAnalyses } from './analysis-storage';
+import { deleteDreamReviews } from './review-storage';
 export const DREAM_DRAFT_KEY = 'dream-memory:text-draft:v1';
 
 const DREAM_RECORDS_KEY = 'dream-memory:records:v1';
@@ -263,5 +266,8 @@ export async function deleteDreamRecord(
     (record) => record.id !== id
   );
 
+  await deleteDreamExplorations(id);
+  await deleteDreamAnalyses(id);
+  await deleteDreamReviews(id);
   await saveDreamRecords(nextRecords);
 }

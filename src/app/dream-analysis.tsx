@@ -1,12 +1,12 @@
 import {
+  useFocusEffect,
   useLocalSearchParams,
   useRouter,
 } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import {
   Alert,
-  Linking,
   Platform,
   Pressable,
   ScrollView,
@@ -22,6 +22,7 @@ import {
   type DreamAnalysis,
 } from '../lib/analysis-storage';
 import { generateLocalDreamAnalysis } from '../lib/analysis-service';
+import { AnalysisExperience } from '../components/analysis-experience';
 import {
   generateRemoteDreamAnalysis,
   isRemoteAnalysisConfigured,
@@ -58,11 +59,12 @@ export default function DreamAnalysisScreen() {
     DreamAnalysis[]
   >([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const generating = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     async function loadData() {
       if (!dreamId) {
         setErrorMessage('缺少梦境编号');
@@ -98,14 +100,15 @@ export default function DreamAnalysisScreen() {
       }
     }
 
-    loadData();
-  }, [dreamId]);
+    void loadData();
+  }, [dreamId]));
 
   const generateAnalysis = async () => {
-    if (!dream || isGenerating) {
+    if (!dream || generating.current) {
       return;
     }
 
+    generating.current = true;
     try {
       setIsGenerating(true);
       setErrorMessage('');
@@ -187,6 +190,7 @@ export default function DreamAnalysisScreen() {
           : '生成分析失败，请稍后重试'
       );
     } finally {
+      generating.current = false;
       setIsGenerating(false);
     }
   };
@@ -277,7 +281,7 @@ export default function DreamAnalysisScreen() {
             </Text>
 
             <Text style={styles.subtitle}>
-              先区分事实、可能联系和反思问题，不给梦境套用确定答案。
+              从梦里的细节出发，看看哪些理解与你的经历贴近，也给不确定的地方留些空间。
             </Text>
           </View>
 
@@ -384,135 +388,7 @@ export default function DreamAnalysisScreen() {
                 </ScrollView>
               ) : null}
 
-              {currentAnalysis.dreamSummary ? (
-                <View style={styles.summaryCard}>
-                  <Text style={styles.summaryLabel}>
-                    AI 梦境摘要
-                  </Text>
-                  <Text style={styles.summaryText}>
-                    {currentAnalysis.dreamSummary}
-                  </Text>
-                </View>
-              ) : null}
-
-              {currentAnalysis.emotionalThemes?.length ? (
-                <AnalysisSection
-                  title="核心情绪与变化"
-                  description="区分梦中明确情绪与可探索的情绪线索"
-                  items={currentAnalysis.emotionalThemes}
-                />
-              ) : null}
-
-              {currentAnalysis.keyElements?.length ? (
-                <AnalysisSection
-                  title="关键人物、场景与事件"
-                  description="关注梦中反复出现或推动情节的元素"
-                  items={currentAnalysis.keyElements}
-                />
-              ) : null}
-
-              <AnalysisSection
-                title="事实记录"
-                description="只整理你明确记录过的信息"
-                items={currentAnalysis.observations}
-              />
-
-              {currentAnalysis.sleepNoteConnections?.length ? (
-                <AnalysisSection
-                  title="与睡前记录的可能联系"
-                  description="只讨论可能的连续性，不把时间相邻当成因果"
-                  items={currentAnalysis.sleepNoteConnections}
-                />
-              ) : null}
-
-              <AnalysisSection
-                title="可能的联系"
-                description="这些是探索方向，不是确定解释"
-                items={
-                  currentAnalysis.possibleConnections
-                }
-              />
-
-              {currentAnalysis.alternativeInterpretations?.length ? (
-                <AnalysisSection
-                  title="其他解释方向"
-                  description="同时保留多种可能，避免把单一解释当成答案"
-                  items={currentAnalysis.alternativeInterpretations}
-                />
-              ) : null}
-
-              {currentAnalysis.evidenceBoundaries?.length ? (
-                <AnalysisSection
-                  title="研究依据与边界"
-                  description="说明哪些属于研究背景，哪些仍只是个人层面的推测"
-                  items={currentAnalysis.evidenceBoundaries}
-                />
-              ) : null}
-
-              <AnalysisSection
-                title="可以问自己的问题"
-                description="帮助你联系现实经历"
-                items={
-                  currentAnalysis.reflectionQuestions
-                }
-              />
-
-              <AnalysisSection
-                title="温和建议"
-                description="以持续记录和自我观察为主"
-                items={currentAnalysis.gentleSuggestions}
-              />
-
-              <View style={styles.sourceSection}>
-                <Text style={styles.sectionTitle}>
-                  研究依据
-                </Text>
-
-                <Text style={styles.sectionDescription}>
-                  点击可查看 PubMed 原始资料
-                </Text>
-
-                {currentAnalysis.evidenceSources.map(
-                  (source) => (
-                    <Pressable
-                      key={source.url}
-                      onPress={() =>
-                        Linking.openURL(source.url)
-                      }
-                      style={({ pressed }) => [
-                        styles.sourceCard,
-                        pressed && styles.pressed,
-                      ]}
-                    >
-                      <Text style={styles.sourceTitle}>
-                        {source.title}
-                      </Text>
-
-                      <Text style={styles.sourceAuthors}>
-                        {source.authors} · {source.year}
-                      </Text>
-
-                      <Text style={styles.sourceNote}>
-                        {source.note}
-                      </Text>
-
-                      <Text style={styles.sourceLink}>
-                        查看来源 ›
-                      </Text>
-                    </Pressable>
-                  )
-                )}
-              </View>
-
-              <View style={styles.disclaimerCard}>
-                <Text style={styles.disclaimerTitle}>
-                  重要说明
-                </Text>
-
-                <Text style={styles.disclaimerText}>
-                  {currentAnalysis.disclaimer}
-                </Text>
-              </View>
+              <AnalysisExperience key={currentAnalysis.id} dream={dream} analysis={currentAnalysis} sleepNote={sleepNote} />
             </>
           )}
 
@@ -523,42 +399,6 @@ export default function DreamAnalysisScreen() {
           ) : null}
         </View>
       </ScrollView>
-    </View>
-  );
-}
-
-type AnalysisSectionProps = {
-  title: string;
-  description: string;
-  items: string[];
-};
-
-function AnalysisSection({
-  title,
-  description,
-  items,
-}: AnalysisSectionProps) {
-  return (
-    <View style={styles.analysisSection}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-      <Text style={styles.sectionDescription}>
-        {description}
-      </Text>
-
-      <View style={styles.analysisCard}>
-        {items.map((item, index) => (
-          <View
-            key={`${title}-${index}`}
-            style={[
-              styles.analysisItem,
-              index > 0 && styles.analysisItemSpacing,
-            ]}
-          >
-            <Text style={styles.analysisBullet}>✦</Text>
-            <Text style={styles.analysisText}>{item}</Text>
-          </View>
-        ))}
-      </View>
     </View>
   );
 }

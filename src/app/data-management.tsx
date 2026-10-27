@@ -314,7 +314,7 @@ export default function DataManagementScreen() {
           <Text style={styles.title}>数据管理</Text>
 
           <Text style={styles.subtitle}>
-            备份梦境、睡前记录、分析结果和应用中的其他本地数据。
+            备份梦境、睡前记录、分析结果、探索对话、反馈和阶段复盘等本地数据。备份可能包含个人信息，请妥善保管。
           </Text>
 
           <View style={styles.summaryCard}>
@@ -506,7 +506,7 @@ export default function DataManagementScreen() {
             </Text>
 
             <Text style={styles.dangerDescription}>
-              此操作会删除全部梦境、睡前记录、分析结果和草稿，且无法撤销。建议先导出备份。
+              此操作会删除全部梦境、睡前记录、分析结果、探索对话、反馈、阶段复盘和草稿，且无法撤销。建议先导出备份。
             </Text>
 
             <Pressable
