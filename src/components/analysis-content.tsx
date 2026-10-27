@@ -13,7 +13,9 @@ type Props = {
 export function AnalysisContent({ analysis, understandingFeedback, interpretationFeedback, explorationControls }: Props) {
   const [expanded, setExpanded] = useState(false);
   const content = getAnalysisPresentation(analysis);
+  const deep = analysis.kind === 'deep';
   return <View>
+    {deep ? <><Section title="深度理解">{analysis.deepNarrative?.trim() ? <Text style={styles.body}>{analysis.deepNarrative}</Text> : <Text style={styles.body}>这份旧版结果还没有生成连贯正文。你的对话仍保留着，可以回到探索页面重新生成深度分析。</Text>}{understandingFeedback}</Section>{explorationControls}</> : <>
     <Section title="我对这个梦的理解"><Text style={styles.body}>{content.understanding}</Text>{understandingFeedback}</Section>
     <Section title="梦里的关键线索"><Lines items={content.keyClues} /></Section>
     <Section title="与现实和睡前记录的联系"><Lines items={content.wakingConnections} /></Section>
@@ -26,12 +28,14 @@ export function AnalysisContent({ analysis, understandingFeedback, interpretatio
       </View>) : <Text style={styles.body}>目前没有足够依据给出多种具体理解，先保留这个空白。</Text>}
     </Section>
     <Section title="继续探索"><Lines items={content.furtherExploration} />{explorationControls}</Section>
+    </>}
     <Pressable accessibilityRole="button" accessibilityState={{ expanded }} onPress={() => setExpanded(value => !value)} style={styles.notes}>
       <Text style={styles.heading}>分析说明 {expanded ? '⌃' : '⌄'}</Text><Text style={styles.hint}>方法、研究来源与使用边界</Text>
     </Pressable>
     {expanded ? <View style={styles.card}>
       <Text style={styles.body}>自由联想借鉴弗洛伊德的方法：从梦中细节出发，探索你自己的记忆与感受。这是一种探索方式，不能证明某种潜意识解释，也不使用固定符号词典。</Text>
       <Lines items={analysis.evidenceBoundaries ?? []} />
+      {deep && !analysis.deepNarrative ? <View><Text style={styles.heading}>旧版分析内容</Text><Text style={styles.body}>{content.understanding}</Text><Lines items={[...content.keyClues, ...content.wakingConnections, ...content.possibleReadings.map(reading => reading.interpretation + '（依据：' + reading.evidence + '）')]} /></View> : null}
       <Text style={styles.hint}>{analysis.disclaimer}</Text>
       {(analysis.evidenceSources ?? []).map(source => <Pressable accessibilityRole="link" key={source.url} onPress={() => Linking.openURL(source.url)} style={styles.reading}>
         <Text style={styles.body}>{source.title}</Text><Text style={styles.hint}>{source.authors} · {source.year}</Text>

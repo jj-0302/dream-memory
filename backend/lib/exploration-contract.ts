@@ -29,8 +29,10 @@ export function publicSections(value: unknown) {
   if (new Set(possibleReadings.map(item => item.interpretation)).size !== possibleReadings.length) throw new Error('解释方向重复');
   return { understanding, keyClues: list(input.keyClues, 1, 4), wakingConnections: list(input.wakingConnections, 1, 4), possibleReadings, furtherExploration: list(input.furtherExploration, 1, 4) };
 }
-export function analysisResult(value: unknown) {
+export function analysisResult(value: unknown, requireNarrative = false) {
   const input = object(value);
+  const deepNarrative = input.deepNarrative === undefined ? undefined : text(input.deepNarrative, 4000).replace(/\s*\n+\s*/g, ' ');
+  if (requireNarrative && (!deepNarrative || deepNarrative.length < 200)) throw new Error('AI_NARRATIVE_INVALID');
   const dreamSummary = text(input.dreamSummary, 600);
   if (!dreamSummary) throw new Error('缺少摘要');
   const readList = (field: string, min: number, max: number) => {
@@ -38,11 +40,11 @@ export function analysisResult(value: unknown) {
     catch { throw new Error('AI_ARRAY_' + field); }
   };
   return {
-    schemaVersion: 3, publicSections: publicSections(input.publicSections), dreamSummary,
+    schemaVersion: 3, publicSections: publicSections(input.publicSections), dreamSummary, ...(deepNarrative ? { deepNarrative } : {}),
     emotionalThemes: readList('emotionalThemes', 1, 4), keyElements: readList('keyElements', 1, 5), observations: readList('observations', 1, 4),
-    sleepNoteConnections: readList('sleepNoteConnections', 1, 3), possibleConnections: readList('possibleConnections', 1, 4),
+    sleepNoteConnections: readList('sleepNoteConnections', 0, 3), possibleConnections: readList('possibleConnections', 0, 4),
     alternativeInterpretations: readList('alternativeInterpretations', 2, 3), evidenceBoundaries: readList('evidenceBoundaries', 1, 3),
-    reflectionQuestions: readList('reflectionQuestions', 1, 4), gentleSuggestions: readList('gentleSuggestions', 1, 4),
+    reflectionQuestions: readList('reflectionQuestions', 0, 4), gentleSuggestions: readList('gentleSuggestions', 0, 4),
   };
 }
 export type Input = ReturnType<typeof explorationInput>;

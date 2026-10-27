@@ -24,6 +24,7 @@ export default function DreamExploreScreen() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [adding, setAdding] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
   const lock = useRef(false);
   const lastSave = useRef<Promise<unknown>>(Promise.resolve());
   useFocusEffect(useCallback(() => {
@@ -73,6 +74,7 @@ export default function DreamExploreScreen() {
       if (action === 'question' && current.round >= 4) { setSession(current); return; }
       const result = await requestExploration(id, action);
       setSession(result); setDraft(result.draft);
+      if (action === 'finalize') setShowTranscript(false);
     } catch (e) {
       const saved = await getExploration(id).catch(() => null);
       if (saved) { setSession(saved); setDraft(saved.draft); }
@@ -111,17 +113,20 @@ export default function DreamExploreScreen() {
       <Text style={styles.title}>{session.dreamSnapshot.title || '一起多理解一点这个梦'}</Text>
       <Text style={styles.hint}>已提问 {session.round}/4 轮。换一个问题也使用一轮额度；达到上限后不再主动追问。</Text>
       <Text style={styles.hint}>沿用开始探索时的记录。你的回答、草稿和反馈会保存在本机。</Text>
+      {session.finalAnalysis ? <View><Text style={styles.notice}>已保存的深度分析{session.status !== 'completed' ? '（新增反馈或补充后可重新生成）' : ''}</Text><AnalysisContent key={session.finalAnalysis.id} analysis={session.finalAnalysis} /></View> : null}
+      {session.finalAnalysis ? <Pressable accessibilityRole="button" accessibilityState={{ expanded: showTranscript }} onPress={() => setShowTranscript(value => !value)} style={styles.card}><Text style={styles.link}>{showTranscript ? '收起探索对话' : '查看探索对话'}</Text></Pressable> : null}
+      {(!session.finalAnalysis || showTranscript) ? <View>
       {session.messages.filter(message => message.kind !== 'question' || message.questionId !== question?.id).map(message => <View key={message.id} style={[styles.message, message.role === 'user' && styles.userMessage]}>
         <Text style={styles.label}>{message.kind === 'question' ? 'AI 提问' : message.kind === 'skipped' ? '已换问' : message.kind === 'supplement' ? '你的补充' : '你的回答'}</Text><Text style={styles.body}>{message.text}</Text>
       </View>)}
+      </View> : null}
       {question ? <View style={styles.card}>
         <Text style={styles.heading}>第 {session.round} 轮</Text><Text style={styles.body}>{question.text}</Text>
         <View style={styles.options}>{[...question.options, '不确定', '不想回答'].map(option => <Pressable key={option} accessibilityRole="button" accessibilityState={{ selected: draft === option }} disabled={busy} onPress={() => saveDraft(option)} style={[styles.choice, draft === option && styles.selected]}><Text style={styles.choiceText}>{option}</Text></Pressable>)}</View>
         <TextInput accessibilityLabel="本轮回答" multiline editable={!busy} maxLength={2000} value={draft} onChangeText={saveDraft} placeholder="也可以用自己的话回答，或补充参考选项…" placeholderTextColor={c.muted} style={styles.input} />
       </View> : !session.finalAnalysis && !exhausted ? <View style={styles.card}><Text style={styles.body}>准备好后点“继续深入”，AI 会根据记录和反馈问一个问题。也可以直接生成深度分析。</Text></View> : null}
-      {exhausted ? <Text style={styles.notice}>4 轮已结束，AI 不会再主动提问。你可以生成深度分析、自行补充或保存退出。</Text> : null}
+      {exhausted && !session.finalAnalysis ? <Text style={styles.notice}>4 轮已结束，AI 不会再主动提问。你可以生成深度分析、自行补充或保存退出。</Text> : null}
       {(adding || (!question && !!draft)) ? <View style={styles.card}><Text style={styles.heading}>再补充一件事</Text><TextInput accessibilityLabel="自行补充的信息" multiline editable={!busy} maxLength={2000} value={draft} onChangeText={saveDraft} placeholder="可以写现实背景、个人联想或对解释的纠正…" placeholderTextColor={c.muted} style={styles.input} /><Pressable disabled={busy || !draft.trim()} onPress={() => void saveSupplement()}><Text style={styles.link}>保存这条补充</Text></Pressable></View> : null}
-      {session.finalAnalysis ? <View><Text style={styles.notice}>已保存的深度分析{session.status !== 'completed' ? '（新增反馈或补充后可重新生成）' : ''}</Text><AnalysisContent key={session.finalAnalysis.id} analysis={session.finalAnalysis} /></View> : null}
       {error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}
       {busy ? <Text accessibilityLiveRegion="polite" style={styles.hint}>正在整理，请稍候；已有回答已保存在本机…</Text> : null}
 

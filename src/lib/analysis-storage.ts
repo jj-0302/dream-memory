@@ -27,6 +27,7 @@ export type AnalysisPublicSections = {
 export type DreamAnalysisDraft = {
   explorationId?: string;
   kind?: 'initial' | 'deep';
+  deepNarrative?: string;
   schemaVersion?: 3;
   publicSections?: AnalysisPublicSections;
   dreamSummary?: string;
